@@ -1,0 +1,56 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\ResetPasswordController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\LeadController;
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
+|
+*/
+
+
+Route::get('/', function () {
+    return view('auth.login');
+});
+
+Route::group(['middleware'=>'auth'],function()
+{
+    Route::get('/home', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::any('/lead', [LeadController::class, 'list'])->name('lead.list');
+    Route::any('/lead/add', [LeadController::class, 'add'])->name('lead.add');
+    Route::any('/lead/store', [LeadController::class, 'store'])->name('lead.store');
+    Route::get('/lead/{id}', [LeadController::class, 'show'])->name('lead.show');
+
+});
+
+Auth::routes();
+Route::post('/get-states', [Controller::class, 'getStates'])->name('getStates');
+// -----------------------------login-------------------------------//
+Route::controller(LoginController::class)->group(function () {
+    Route::get('/login', 'login')->name('login');
+    Route::post('/login', 'authenticate');
+    Route::get('/logout', 'logout')->name('logout');
+});
+
+// ------------------------------ register ---------------------------------//
+Route::controller(RegisterController::class)->group(function () {
+    Route::get('/register', 'register')->name('register');
+    Route::post('/register','storeUser')->name('register');    
+});
+
+// -------------------------- main dashboard ----------------------//
+Route::controller(AdminController::class)->group(function () {
+    Route::get('/home', [AdminController::class, 'index'])->name('admin.dashboard');
+});
