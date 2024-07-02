@@ -5,7 +5,7 @@
   <div class="page-inner">
     <div class="page-header">
       <h3 class="fw-bold mb-3">Leads</h3>
-      <ul class="breadcrumbs mb-3">
+      <!-- <ul class="breadcrumbs mb-3">
         <li class="nav-home">
           <a href="#">
             <i class="icon-home"></i>
@@ -18,7 +18,7 @@
           <a href="#">Leads</a>
         </li>
         
-      </ul>
+      </ul> -->
     </div>
     <div class="row">
       <div class="col-md-12">
@@ -27,9 +27,22 @@
             <div class="card-title">Lead Detail</div>
           </div>
           <div class="card-body">
-            <!-- <div class="card-sub">
-              This is the basic table view of the ready dashboard :
-            </div> -->
+            <div class="row">
+              <div class="col-sm-1">
+                  <a href="{{route('lead.edit',$leads->id)}}" title="edit lead"><i class="fas fa-pen-square"></i>Edit</a>
+              </div>
+              <div class="col-sm-3">
+                <select class="form-control" id="lead_more" name="lead_more">
+                  <option value="">More</option>
+                  <option value="7">Mark as Lost</option>
+                  <option value="2">Mark as Junk</option>
+                  <option value="delete">Delete Lead</option>
+                </select>
+              </div>
+              <div class="col-sm-3">
+                <div class="cutomer-btn"></div>
+              </div>
+            </div>
             <div class="col-12 table-responsive">
             <table class="table table-bordered">
               <thead>
@@ -79,7 +92,7 @@
                 </tr>
                 <tr>
                   <th scope="col">Status</th>
-                  <td>{{$leads->getLeadStatus->lead}}</td>
+                  <td id="leadstatus">{{$leads->getLeadStatus->lead}}</td>
                 </tr>
                 <tr>
                   <th scope="col">Source</th>
@@ -120,5 +133,80 @@
     </div>
   </div>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+$('#lead_more').on('change', function() {
+  if ($(this).val() != 'delete') {
+    var tag = `<a href="{{ route('lead.customer',$leads->id) }}" title="Convert to Customer" class="btn btn-success">Convert to Customer</a>`;
+    $('.cutomer-btn').html(tag);
+    if($(this).val() == 7){
+      $.ajax({
+          url: "{{ route('lead.updateLeadStatus }}",
+          method: "POST",
+          data: {
+            _token: "{{ csrf_token() }}",
+            lead_id: {{ $leads->id }},
+            status_id:$(this).val()
+          },
+          success: function(response) {
+            if(response.success) {
+              Swal.fire(
+                'Deleted!',
+                'lead status updated successfully.',
+                'success'
+              ).then(() => {
+                $('.cutomer-btn').html(tag);
+                $('#leadstatus').text('Lost')
+              });
+            } else {
+              Swal.fire(
+                'Error!',
+                'There was an error deleting the lead.',
+                'error'
+              );
+            }
+          }
+        });
+    }
+  } else {
+    Swal.fire({
+      title: "Confirm",
+      text: "Are you sure you want to delete this lead?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: "{{ route('lead.delete',$leads->id) }}",
+          method: "GET",
+          data: {
+            _token: "{{ csrf_token() }}",
+            lead_id: {{ $leads->id }}
+          },
+          success: function(response) {
+            if(response.success) {
+              Swal.fire(
+                'Deleted!',
+                'The lead has been deleted.',
+                'success'
+              ).then(() => {
+                window.location.href = "{{ route('lead.list') }}";
+              });
+            } else {
+              Swal.fire(
+                'Error!',
+                'There was an error deleting the lead.',
+                'error'
+              );
+            }
+          }
+        });
+      }
+    });
+  }
+});
+</script>
 @endsection

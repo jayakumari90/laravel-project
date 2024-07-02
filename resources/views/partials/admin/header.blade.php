@@ -67,22 +67,22 @@
                           <div class="u-text">
                             <h4>{{Auth::user()->name}}</h4>
                             <p class="text-muted">{{Auth::user()->email}}</p>
-                            <a
+                            <!-- <a
                               href="profile.html"
                               class="btn btn-xs btn-secondary btn-sm"
                               >View Profile</a
-                            >
+                            > -->
                           </div>
                         </div>
                       </li>
                       <li>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">My Profile</a>
+                        <!-- <a class="dropdown-item" href="#">My Profile</a>
                         <a class="dropdown-item" href="#">My Balance</a>
                         <a class="dropdown-item" href="#">Inbox</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#">Account Setting</a>
-                        <div class="dropdown-divider"></div>
+                        <div class="dropdown-divider"></div> -->
                         <a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
                       </li>
                     </div>

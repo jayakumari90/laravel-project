@@ -32,6 +32,13 @@ Route::group(['middleware'=>'auth'],function()
     Route::any('/lead/add', [LeadController::class, 'add'])->name('lead.add');
     Route::any('/lead/store', [LeadController::class, 'store'])->name('lead.store');
     Route::get('/lead/{id}', [LeadController::class, 'show'])->name('lead.show');
+    Route::get('/lead/edit/{id}', [LeadController::class, 'edit'])->name('lead.edit');
+    Route::get('/lead/delete/{id}', [LeadController::class, 'delete'])->name('lead.delete');
+    Route::any('/lead/update', [LeadController::class, 'update'])->name('lead.update');
+    Route::any('/lead/customer/{id}', [LeadController::class, 'customer'])->name('lead.customer');
+    Route::any('/lead/customer-update', [LeadController::class, 'customerUpdate'])->name('lead.customerUpdate');
+    Route::any('/lead/update-lead-statuse', [LeadController::class, 'updateLeadStatus'])->name('lead.updateLeadStatus');
+    Route::get('leads/export/{format}', [LeadController::class, 'export'])->name('lead.export');
 
 });
 

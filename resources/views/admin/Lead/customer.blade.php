@@ -1,10 +1,10 @@
 @extends('layouts.admin')
-@section('title', 'Add Lead')
+@section('title', 'Edit Lead')
 @section('content')
 <div class="container">
     <div class="page-inner">
         <div class="page-header">
-            <h3 class="fw-bold mb-3">Leads</h3>
+            <h3 class="fw-bold mb-3">Convert to Customer</h3>
             <!-- <ul class="breadcrumbs mb-3">
                 <li class="nav-home">
                 <a href="#">
@@ -15,7 +15,7 @@
                 <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                <a href="#">Leads</a>
+                <a href="#">Convert to Customer</a>
                 </li>
                 <li class="separator">
                 <i class="icon-arrow-right"></i>
@@ -38,84 +38,50 @@
                 <!-- CSRF Token -->
                 {!! Form::token() !!}
                 <div class="row">
-                <div class="col-md-6 col-lg-4">
-                    <div class="form-group">
-                        <label for="leads"><small class="req text-danger">* </small>Lead</label>
-                        <select class="form-select select2" id="leads" name="lead">
-                        <option value=""></option>
-                        @foreach($lead_status as $lead)
-                        <option value="{{ $lead->id}}">{{ $lead->lead}}</option>
-                        @endforeach
-                        </select>  
-                        <span id="lead-err" class="error"></span>                       
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="form-group">
-                        <label for="source"><small class="req text-danger">* </small>Source</label>
-                        <select class="form-select select2" id="sources" name="source">
-                            <option value=""></option>
-                            @foreach($source as $val)
-                            <option value="{{ $val->id}}">{{ $val->source}}</option>
-                            @endforeach
-                        </select>
-                        <span id="source-err" class="error"></span> 
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="form-group">
-                        <label for="staff">Assigned</label>
-                        <select class="form-select select2" id="staff" name="staff">
-                            <option value=""></option>
-                            @foreach($staffs as $staff)
-                            <option value="{{ $staff->id}}">{{ $staff->name}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="form-group">
-                        <label for="tages">Tages</label>
-                        <select class="form-select select2" name="tag[]" id="tfgyhtygfuytutyyu" multiple="multiple">
-                        
-                        @foreach($tags as $tag)
-                        <option value="{{ $tag->tag_name}}">{{ $tag->tag_name}}</option>
-                        @endforeach
-                        </select>
-                    </div>
-                </div>
+                    <input type="hidden" name="lead_id" id="lead_id" value="{{ $lead_data ? $lead_data->id : '' }}">
                 <div class="col-md-6 col-lg-4">
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input type="text" class="form-control" id="cname" placeholder="Name" name="name" />
+                        <input type="text" class="form-control" id="cname" placeholder="Name" name="name" value="{{ $lead_data ? $lead_data->name:''}}" />
                         <span id="name-err" class="error"></span> 
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4">
                     <div class="form-group">
+                        <label for="position">Position</label>
+                        <input type="text" class="form-control" id="position" placeholder="Position" name="position" value="{{ $lead_data ? $lead_data->position:''}}" />
+                    </div>
+                </div>  
+                <div class="col-md-6 col-lg-4">
+                    <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" class="form-control" id="cemail" placeholder="Email" name="email" />
+                        <input type="email" class="form-control" id="cemail" placeholder="Email" name="email" value="{{ $lead_data ? $lead_data->email:''}}" />
                         <span id="email-err" class="error"></span> 
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4">
                     <div class="form-group">
+                        <label for="company">Company</label>
+                        <input type="text" class="form-control" id="company" placeholder="Company" name="company" value="{{ $lead_data ? $lead_data->company:''}}" />
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="form-group">
                         <label for="phone">Phone</label>
-                        <input type="text" class="form-control" id="phone-no" placeholder="Phone" name="phone" />
+                        <input type="text" class="form-control" id="phone-no" placeholder="Phone" name="phone" value="{{ $lead_data ? $lead_data->phone:''}}" />
                         <span id="phone-err" class="error"></span> 
                     </div>
                 </div>
-                               
+                <div class="col-md-6 col-lg-4">
+                    <div class="form-group">
+                        <label for="website">Website</label>
+                        <input type="text" class="form-control" id="website" placeholder="Website" name="website" value="{{$lead_data ? $lead_data->website:''}}" />
+                    </div>
+                </div>               
                 <div class="col-md-6 col-lg-4">
                     <div class="form-group">
                         <label for="address">Address</label>
-                        <textarea class="form-control" id="address" name="address" row="3" col="15"></textarea>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="form-group">
-                        <label for="position">Position</label>
-                        <input type="text" class="form-control" id="position" placeholder="Position" name="position" />
+                        <textarea class="form-control" id="address" name="address" row="3" col="15">{{ $lead_data ? $lead_data->address:''}}</textarea>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4">
@@ -124,7 +90,7 @@
                         <select class="form-select" id="country" name="country">
                         <option value=""></option>
                         @foreach($countries as $country)
-                        <option value="{{ $country->id }}">{{ $country->name }}</option>
+                        <option value="{{ $country->id }}" {{($lead_data && $lead_data->country == $country->id)?'selected="selected"':''}}>{{ $country->name }}</option>
                         @endforeach
                         </select>   
                     </div>
@@ -134,57 +100,32 @@
                         <label for="state">State</label>
                         <select class="form-select" id="state" name="state">
                         <option value=""></option>
-                        
-                        </select>   
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="form-group">
-                        <label for="city">City</label>
-                        <input type="text" class="form-control" id="city" placeholder="City" name="city" />
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="form-group">
-                        <label for="website">Website</label>
-                        <input type="text" class="form-control" id="website" placeholder="Website" name="website" />
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="form-group">
-                        <label for="lead_value">Lead Value</label>
-                        <input type="text" class="form-control" id="lead_value" placeholder="Lead Value" name="lead_value" />
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="form-group">
-                        <label for="default_language">Default Language</label>
-                        <select class="form-select select2" id="default_language" name="default_language">
-                        <option value=""></option>
-                        @foreach($languages as $language)
-                        <option value="{{$language->id}}">{{$language->name}}
+                        @foreach($states as $state)
+                        <option value="{{$state->id}}" {{($lead_data && $lead_data->state == $state->id)?'selected="selected"':''}}>{{ $state->name}}</option>
                         @endforeach
                         </select>   
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4">
                     <div class="form-group">
-                        <label for="company">Company</label>
-                        <input type="text" class="form-control" id="company" placeholder="Company" name="company" />
+                        <label for="city">City</label>
+                        <input type="text" class="form-control" id="city" placeholder="City" name="city" value="{{ $lead_data ? $lead_data->city:''}}" />
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-4">
+                    <div class="form-group">
+                        <label for="lead_value">Zip Code</label>
+                        <input type="text" class="form-control" id="zipcode" placeholder="Zip Code" name="zipcode" value="{{$lead_data ? $lead_data->zipcode:''}}" />
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4">
                     <div class="form-group">
-                        <label for="description">Description</label>
-                        <textarea row="3" col="15" class="form-control" id="description" placeholder="Description" name="description"></textarea>
+                        <label for="lead_value">Password</label>
+                        <input type="text" class="form-control" id="password" placeholder="Password" name="password" />
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="form-group">
-                        <input type="checkbox" id="is_public" name="is_public" value="1"> Public    
-                        <input type="checkbox" id="contacted_today" name="contacted_today" value="1"> Contacted Today    
-                    </div>
-                </div>
+
                 
                 <div class="card-action">
                 <button class="btn btn-success">Submit</button>
@@ -227,11 +168,11 @@
 $('#lead-form').on('submit', function(event) {
     event.preventDefault();
         let formData = new FormData(this);
-        let selectedTags = $('#tfgyhtygfuytutyyu').val();
+        let selectedTags = $('#tasks').val();
         console.log("selectedTags",selectedTags);
         formData.append('tag', selectedTags); 
         $.ajax({
-            url: "{{ route('lead.store') }}",
+            url: "{{ route('lead.customerUpdate') }}",
             type: 'POST',
             data: formData,
             processData: false,
@@ -239,7 +180,7 @@ $('#lead-form').on('submit', function(event) {
             success: function(data) {
                 console.log('data',data);
                 if(data.status){
-                    window.location="/lead";
+                    window.location.href=data.redirect_url;
                 }else{
                     let errors = data.data;
                     for (let key in errors) {

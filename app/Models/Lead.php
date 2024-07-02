@@ -11,7 +11,7 @@ class Lead extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'name', 'email', 'phone','address','position','lead','source','staff','country','state','city','website','lead_value','default_language','lead_public','contacted_today','description','company','zipcode','tag','status'
+        'name', 'email', 'phone','address','position','lead','source','staff','country','state','city','website','lead_value','default_language','lead_public','contacted_today','description','company','zipcode','tag','status','converted_customer','password'
     ];
 
     public function getLeadStatus()

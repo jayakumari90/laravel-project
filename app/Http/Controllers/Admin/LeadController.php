@@ -6,6 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\StoreLeadRequest;
+use App\Http\Requests\UpdateLeadRequest;
+use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
+use App\Exports\LeadsExport;
 use App\Models\User;
 use App\Models\RoleType;
 use App\Models\Lead;
@@ -19,37 +23,58 @@ use DataTables;
 
 class LeadController extends Controller
 {
-    public function list(Request $request){
+    public function list(Request $request) {
         if ($request->ajax()) {
-            $data = Lead::select('id','name','company','email','phone','lead_value','staff','lead','source','tag','created_at')->with('getLeadStatus','getSource','getStaff')->get();
-        return Datatables::of($data)->addIndexColumn()
-
+            $data = Lead::with(['getLeadStatus', 'getSource', 'getStaff'])->get();
+            
+            return Datatables::of($data)->addIndexColumn()
                 ->editColumn('lead', function ($row) {
-                        return $row->getLeadStatus->lead;
-                
+                    $lead_status = LeadStatus::where('status', 1)->get();
+                    $options = '<select class="form-control" name="lead_status" onchange="updateLeadStatus(' . $row->id . ', this.value)">';
+                    if($row->lead == 7){
+                        $options .= '<option value="' . $status->id . '" ' . $selected . '></option>';
+                    }
+                    foreach ($lead_status as $status) {
+                        $selected = $row->lead == $status->id ? 'selected' : '';
+                        $options .= '<option value="' . $status->id . '" ' . $selected . '>' . $status->lead . '</option>';
+                    }
+                    $options .= '</select>';
+                    return $options;
                 })
                 ->editColumn('source', function ($row) {
-                        return $row->getSource->source;
-                
+                    return $row->getSource->source;
                 })
-                
                 ->editColumn('staff', function ($row) {
-                        return $row->getStaff->name;
-                
+                    return $row->getStaff->name;
                 })
-                ->addColumn('action', function($row){
-                    $btn = '<a href="' . route('lead.show', $row->id) . '"><i class="fas fa-eye"></i>
-                    </a>';
-                   // $btn .= '<a href="' . route('restaurant_cat.delete', $row->id) . '" type="button" data-toggle="tooltip" data-title="Delete" title="Delete" class="btn btn-danger btn-sm">Delete</a>';
-                    
+                ->editColumn('created_at', function($row) {
+                    $date1 = date('Y-m-d H:i:s', strtotime($row->created_at));
+                    $date2 = date('Y-m-d H:i:s');
+
+                    $diff = abs(strtotime($date2) - strtotime($date1));
+
+                    $years = floor($diff / (365*60*60*24));
+                    $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
+                    $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
+                    $hours   = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24 - $days*60*60*24)/ (60*60)); 
+                    $minuts  = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24 - $days*60*60*24 - $hours*60*60)/ 60); 
+                    $seconds = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24 - $days*60*60*24 - $hours*60*60 - $minuts*60)); 
+                    $hour = $hours ? $hours.' hrs, ':'';
+                    $min = $minuts ? $minuts .' min':'';
+                    return $hour.$min.' ago';
+                })
+                ->addColumn('action', function($row) {
+                    $btn = '<a href="' . route('lead.show', $row->id) . '" title="View"><i class="fas fa-eye"></i></a>';
+                    $btn .= '<a href="' . route('lead.edit', $row->id) . '" title="Edit"><i class="fas fa-pen-square"></i></a>';
                     return $btn;
                 })
-                ->rawColumns(['action'])
+                ->rawColumns(['action', 'lead']) // Ensure HTML is rendered
                 ->make(true);
         }
-
+    
         return view('admin.lead.list');
     }
+    
 
     public function add(Request $request){
         $lead_status = LeadStatus::where('status',1)->get();
@@ -100,5 +125,122 @@ class LeadController extends Controller
     public function show($id){
         $leads = Lead :: where('id',$id)->with('getLeadStatus','getSource','getStaff','getCountry','getState','getDefaultLanguage')->first();
         return view('admin.lead.show', compact('leads'));
+    }
+    public function edit($id){
+        $lead_status = LeadStatus::where('status',1)->get();
+        $source = Source::where('status',1)->get();
+        $staffs = User::where('role',3)->where('status',1)->get();
+        $tags = Tag::where('status',1)->get();
+        $countries = Country::get();
+        $states = State::get();
+        $languages = DefaultLanguage::where('status',1)->get();
+        $lead_data = Lead::where('id',$id)->first();
+        return view('admin.lead.edit', compact('lead_data','lead_status','source','staffs','tags','countries','states','languages'));
+    }
+
+    public function update(StoreLeadRequest $request){
+        if($request->isMethod('post')){
+            Lead::where('id',$request->lead_id)->Update([
+                'name'=>$request->name,
+                'email'=>$request->email,
+                'phone'=>$request->phone,
+                'address'=>$request->address,
+                'lead'=>$request->lead,
+                'source'=>$request->source,
+                'staff'=>$request->staff,
+                'tag'=>$request->tag,
+                'position'=>$request->position,
+                'country'=>$request->country,
+                'state'=>$request->state,
+                'city'=>$request->city,
+                'website'=>$request->website,
+                'lead_value'=>$request->lead_value,
+                'default_language'=>$request->default_language,
+                'company'=>$request->company,
+                'description'=>$request->description,
+                'lead_public'=> $request->is_public,
+                'contacted_today'=>$request->contacted_today,
+                'status'=>1
+            ]);
+        }
+        
+        return response()->json(['status'=> true, 'msg' => 'Lead added successfully.','redirect_url' => route('lead.show',$request->lead_id)]);
+    }
+    public function delete($id){
+       $delete = Lead::where('id',$id)->delete();
+       if($delete){
+        return response()->json(['success'=>true,'msg'=>'lead deleted successfully']);
+       }
+    }
+
+    public function customer(Request $request, $id){
+        $lead_status = LeadStatus::where('status',1)->get();
+        $source = Source::where('status',1)->get();
+        $staffs = User::where('role',3)->where('status',1)->get();
+        $tags = Tag::where('status',1)->get();
+        $countries = Country::get();
+        $states = State::get();
+        $languages = DefaultLanguage::where('status',1)->get();
+        $lead_data = Lead::where('id',$id)->first();
+        
+        return view('admin.lead.customer', compact('lead_data','lead_status','source','staffs','tags','countries','states','languages'));
+    }
+
+    public function customerUpdate(UpdateLeadRequest $request){
+        
+        if($request->isMethod('post')){
+            $request->skipValidation = true;
+            Lead::where('id',$request->lead_id)->Update([
+                    'name'=>$request->name,
+                    'email'=>$request->email,
+                    'phone'=>$request->phone,
+                    'address'=>$request->address,
+                    'position'=>$request->position,
+                    'country'=>$request->country,
+                    'state'=>$request->state,
+                    'city'=>$request->city,
+                    'website'=>$request->website,
+                    'company'=>$request->company,
+                    'zipcode'=>$request->zipcode,
+                    'password'=>$request->password,
+                    'converted_customer'=>1
+                ]);
+            
+            
+            return response()->json(['status'=> true, 'msg' => 'Lead added successfully.','redirect_url' => route('lead.show',$request->lead_id)]);
+        }
+    }
+
+    public function updateLeadStatus(Request $request){
+        if($request->isMethod('post')){
+            Lead::where('id',$request->lead_id)->update([
+                'lead'=>$request->status_id
+            ]);
+            return response()->json(['success'=>true, 'msg'=>'Lead status updated successfully']);
+        }
+    }
+    
+    public function export($format)
+    {
+        //dd($format);
+        switch ($format) {
+            case 'csv':
+                return Excel::download(new LeadsExport, 'leads.csv');
+            case 'xlsx':
+                return Excel::download(new LeadsExport, 'leads.xlsx');
+            case 'pdf':
+                $data = Lead::with([
+                    'getLeadStatus',
+                    'getSource',
+                    'getStaff',
+                    'getCountry',
+                    'getState',
+                    'getDefaultLanguage'
+                ])->get();
+                $pdf = PDF::loadView('admin.lead.export', compact('data'));
+                return $pdf->download('leads.pdf');
+            default:
+                return back();
+        }
     }
 }

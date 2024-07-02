@@ -13,6 +13,8 @@
 
     <!-- Fonts and icons -->
     <script src="{{ asset('assets/js/plugin/webfont/webfont.min.js') }}"></script>
+    <!-- Sweet Alert -->
+    <!-- <script src="{{ asset('assets/js/plugin/sweetalert/sweetalert.min.js')}}"></script> -->
     <script>
       WebFont.load({
         google: { families: ["Public Sans:300,400,500,600,700"] },
@@ -37,12 +39,12 @@
     <link rel="stylesheet" href="{{ asset('assets/css/kaiadmin.min.css') }}" />
 
     <!-- CSS Just for demo purpose, don't include it in your project -->
-    <script src="{{ asset('assets/js/core/jquery-3.7.1.min.js') }}"></script>
+    <!-- <script src="{{ asset('assets/js/core/jquery-3.7.1.min.js') }}"></script> -->
     <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>  
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>   -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
-    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <!-- <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script> -->
     <link rel="stylesheet" href="{{ asset('assets/css/demo.css') }}" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <!-- Include Select2 CSS -->
@@ -86,17 +88,16 @@
     <script src="{{ asset('assets/js/plugin/chart-circle/circles.min.js') }}"></script>
 
     <!-- Datatables -->
-    <script src="{{ asset('assets/js/plugin/datatables/datatables.min.js') }}"></script>
+    <!-- <script src="{{ asset('assets/js/plugin/datatables/datatables.min.js') }}"></script> -->
 
     <!-- Bootstrap Notify -->
     <script src="{{ asset('assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
 
     <!-- jQuery Vector Maps -->
-    <script src="{{ asset('assets/js/plugin/jsvectormap/jsvectormap.min.js') }}"></script>
+    <!-- <script src="{{ asset('assets/js/plugin/jsvectormap/jsvectormap.min.js') }}"></script> -->
     <script src="{{ asset('assets/js/plugin/jsvectormap/world.js') }}"></script>
 
-    <!-- Sweet Alert -->
-    <script src="{{ asset('assets/js/plugin/sweetalert/sweetalert.min.js')}}"></script>
+    
 
     <!-- Kaiadmin JS -->
     <script src="{{ asset('assets/js/kaiadmin.min.js')}}"></script>

@@ -4,12 +4,13 @@
           <!-- Logo Header -->
           <div class="logo-header" data-background-color="dark">
             <a href="{{route('admin.dashboard')}}" class="logo">
-              <img
+              <!-- <img
                 src="{{asset('assets/img/kaiadmin/logo_light.svg')}}"
                 alt="navbar brand"
                 class="navbar-brand"
                 height="20"
-              />
+              /> -->
+              <span style="color:#fff">CRM</span>
             </a>
             <div class="nav-toggle">
               <button class="btn btn-toggle toggle-sidebar">
@@ -40,20 +41,12 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#lead">
+              <a href="{{ route('lead.list') }}">
                   <i class="fas fa-layer-group"></i>
                   <p>Lead</p>
                   <span class="caret"></span>
                 </a>
-                <div class="collapse" id="lead">
-                  <ul class="nav nav-collapse">
-                    <li>
-                      <a href="{{ route('lead.list') }}">
-                        <span class="sub-item">List</span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
+                   
               </li>
               
             </ul>

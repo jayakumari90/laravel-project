@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
+        "barryvdh/laravel-dompdf": "^2.2",
         "brian2694/laravel-toastr": "^5.59",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.10",
@@ -13,6 +14,7 @@
         "laravel/tinker": "^2.8",
         "laravel/ui": "^4.5",
         "laravelcollective/html": "^6.4",
+        "maatwebsite/excel": "^3.1",
         "yajra/laravel-datatables-oracle": "^10.11"
     },
     "require-dev": {

@@ -1,6 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
+<style>
+    .form-check-label{
+        padding: 0px 0px 0px 0px;
+        margin-top: -39px;
+        margin-left: 29px;
+    }
+    .form-check-input{
+        width: 20px;
+        margin-top: 0;
+    }
+
+</style>
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 
@@ -32,12 +44,13 @@
                             </div>
                         </div>
 
+                        
+
                         <div class="row mb-3">
                             <div class="col-md-6 offset-md-4">
-                                <div class="form-check">
+                                <div class="form-check d-flex align-items-center">
                                     <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                                    <label class="form-check-label" for="remember">
+                                    <label class="form-check-label ms-2" for="remember">
                                         {{ __('Remember Me') }}
                                     </label>
                                 </div>
@@ -50,11 +63,11 @@
                                     {{ __('Login') }}
                                 </button>
 
-                                @if (Route::has('password.request'))
+                                <!-- @if (Route::has('password.request'))
                                     <a class="btn btn-link" href="{{ route('password.request') }}">
                                         {{ __('Forgot Your Password?') }}
                                     </a>
-                                @endif
+                                @endif -->
                             </div>
                         </div>
                     </form>

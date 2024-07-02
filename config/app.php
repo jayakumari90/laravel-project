@@ -161,6 +161,12 @@ return [
          */
         Brian2694\Toastr\ToastrServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
+        Yajra\DataTables\DataTablesServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
+
+
+
         /*
          * Application Service Providers...
          */
