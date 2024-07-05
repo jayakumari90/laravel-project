@@ -39,6 +39,9 @@ Route::group(['middleware'=>'auth'],function()
     Route::any('/lead/customer-update', [LeadController::class, 'customerUpdate'])->name('lead.customerUpdate');
     Route::any('/lead/update-lead-statuse', [LeadController::class, 'updateLeadStatus'])->name('lead.updateLeadStatus');
     Route::get('leads/export/{format}', [LeadController::class, 'export'])->name('lead.export');
+    Route::get('leads/import-lead', [LeadController::class, 'importLead'])->name('lead.importlead');
+    Route::post('/lead-import',[LeadController::class,'import'])->name('lead.import');
+
 
 });
 

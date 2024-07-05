@@ -10,6 +10,7 @@ use App\Http\Requests\UpdateLeadRequest;
 use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use App\Exports\LeadsExport;
+use App\Imports\LeadImport;
 use App\Models\User;
 use App\Models\RoleType;
 use App\Models\Lead;
@@ -241,6 +242,41 @@ class LeadController extends Controller
                 return $pdf->download('leads.pdf');
             default:
                 return back();
+        }
+    }
+    public function importLead(){
+        $lead_status = LeadStatus::where('status',1)->get();
+        $source = Source::where('status',1)->get();
+        $staffs = User::where('role',3)->where('status',1)->get();
+        $countries = Country::get();
+        $states = State::get();
+        return view('admin.lead.importlead', compact('lead_status','source','staffs','countries'));
+    }
+
+    public function import(Request $request)
+    {
+        if ($request->isMethod('post')) {
+            $request->validate([
+                'file' => 'required|file|mimes:csv,txt',
+            ]);
+
+            $file = $request->file('file');
+            if (!$file->isValid()) {
+                return redirect()->back()->with('error', 'Invalid file upload.');
+            }
+
+            // Log the request
+            \Log::info('File uploaded:', ['file' => $file]);
+
+            try {
+                Excel::import(new LeadImport, $file);
+                $data = Lead::where('import_update',1)->get();
+                Lead::where('import_update',1)->update(['lead'=>$request->lead,'source'=>$request->source,'staff'=>$request->staff]);
+                return redirect()->back()->with('success', 'Leads imported successfully.');
+            } catch (\Exception $e) {
+                \Log::error('Import failed:', ['error' => $e->getMessage()]);
+                return redirect()->back()->with('error', 'Failed to import leads.');
+            }
         }
     }
 }

@@ -92,7 +92,7 @@
                 </tr>
                 <tr>
                   <th scope="col">Status</th>
-                  <td id="leadstatus">{{$leads->getLeadStatus->lead}}</td>
+                  <td>{{$leads->getLeadStatus->lead}}</td>
                 </tr>
                 <tr>
                   <th scope="col">Source</th>
@@ -133,41 +133,15 @@
     </div>
   </div>
 </div>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<!-- DataTables JS -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 $('#lead_more').on('change', function() {
   if ($(this).val() != 'delete') {
     var tag = `<a href="{{ route('lead.customer',$leads->id) }}" title="Convert to Customer" class="btn btn-success">Convert to Customer</a>`;
     $('.cutomer-btn').html(tag);
-    if($(this).val() == 7){
-      $.ajax({
-          url: "{{ route('lead.updateLeadStatus }}",
-          method: "POST",
-          data: {
-            _token: "{{ csrf_token() }}",
-            lead_id: {{ $leads->id }},
-            status_id:$(this).val()
-          },
-          success: function(response) {
-            if(response.success) {
-              Swal.fire(
-                'Deleted!',
-                'lead status updated successfully.',
-                'success'
-              ).then(() => {
-                $('.cutomer-btn').html(tag);
-                $('#leadstatus').text('Lost')
-              });
-            } else {
-              Swal.fire(
-                'Error!',
-                'There was an error deleting the lead.',
-                'error'
-              );
-            }
-          }
-        });
-    }
   } else {
     Swal.fire({
       title: "Confirm",
