@@ -41,6 +41,8 @@ Route::group(['middleware'=>'auth'],function()
     Route::get('leads/export/{format}', [LeadController::class, 'export'])->name('lead.export');
     Route::get('leads/import-lead', [LeadController::class, 'importLead'])->name('lead.importlead');
     Route::post('/lead-import',[LeadController::class,'import'])->name('lead.import');
+    Route::post('/lead-upload',[LeadController::class,'uploadFile'])->name('lead.uploadFile');
+    Route::post('/lead-notes',[LeadController::class,'addNotes'])->name('lead.addNotes');
 
 
 });

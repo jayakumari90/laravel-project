@@ -94,7 +94,6 @@ class LoginController extends Controller
         } catch (\Exception $e) {
             DB::rollback();
 
-            Log::error('Authentication failed: ' . $e->getMessage());
 
             Toastr::error('Fail, LOGIN :)', 'Error');
 

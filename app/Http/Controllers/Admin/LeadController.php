@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\StoreLeadRequest;
 use App\Http\Requests\UpdateLeadRequest;
+use Illuminate\Support\Facades\File;
 use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use App\Exports\LeadsExport;
@@ -20,7 +21,10 @@ use App\Models\Country;
 use App\Models\State;
 use App\Models\Tag;
 use App\Models\DefaultLanguage;
+use App\Models\LeadFile;
+use App\Models\LeadNote;
 use DataTables;
+use Illuminate\Support\Facades\Storage;
 
 class LeadController extends Controller
 {
@@ -125,7 +129,8 @@ class LeadController extends Controller
 
     public function show($id){
         $leads = Lead :: where('id',$id)->with('getLeadStatus','getSource','getStaff','getCountry','getState','getDefaultLanguage')->first();
-        return view('admin.lead.show', compact('leads'));
+        $leadfile = LeadFile::where('lead_id',$id)->get();
+        return view('admin.lead.show', compact('leads','leadfile'));
     }
     public function edit($id){
         $lead_status = LeadStatus::where('status',1)->get();
@@ -265,9 +270,6 @@ class LeadController extends Controller
                 return redirect()->back()->with('error', 'Invalid file upload.');
             }
 
-            // Log the request
-            \Log::info('File uploaded:', ['file' => $file]);
-
             try {
                 Excel::import(new LeadImport, $file);
                 $data = Lead::where('import_update',1)->get();
@@ -278,5 +280,34 @@ class LeadController extends Controller
                 return redirect()->back()->with('error', 'Failed to import leads.');
             }
         }
+    }
+
+    public function uploadFile(Request $request){
+        $request->validate([
+            'attachments.*' => 'required|mimes:jpg,jpeg,png,bmp,tiff|max:4096',
+        ]);
+        if ($request->hasFile('attachments')) {
+            foreach ($request->file('attachments') as $file) {
+                $name = time() . '-' . $file->getClientOriginalName();
+                $uploadSuccess = $file->move(public_path('uploads'), $name);
+                
+                LeadFile::create([
+                    'lead_id'=>$request->lead_id,
+                    'image'=>$name,
+                    'status'=>1
+                ]);
+            }
+            $data = LeadFile::where('lead_id',$request->lead_id)->get();
+            $arr = '';
+            foreach($data as $val){
+                $arr .= '<img src="' . asset('uploads/' . $val->image) . '" width="100px">';
+            }
+        }
+
+        return response()->json(['success' => 'Files uploaded successfully','data'=>$arr]);
+    }
+
+    public function addNotes(Request $request){
+        dd($request->all());
     }
 }
