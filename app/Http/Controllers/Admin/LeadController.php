@@ -130,7 +130,8 @@ class LeadController extends Controller
     public function show($id){
         $leads = Lead :: where('id',$id)->with('getLeadStatus','getSource','getStaff','getCountry','getState','getDefaultLanguage')->first();
         $leadfile = LeadFile::where('lead_id',$id)->get();
-        return view('admin.lead.show', compact('leads','leadfile'));
+        $leadnotes = LeadNote::where('lead_id',$id)->get();
+        return view('admin.lead.show', compact('leads','leadfile','leadnotes'));
     }
     public function edit($id){
         $lead_status = LeadStatus::where('status',1)->get();
@@ -309,5 +310,20 @@ class LeadController extends Controller
 
     public function addNotes(Request $request){
         dd($request->all());
+        if($request->isMethod('post')){
+            LeadNote::create([
+                'lead_id'=>$request->lead_id,
+                'note'=>$request->note,
+                'date_connected'=>$request->date,
+                'is_connected'=>$request->is_connected,
+                'status'=>1
+            ]);
+            $data = LeadNote::where('lead_id',$request->lead_id)->get();
+            $arr = '';
+            foreach($data as $val){
+                $arr .= '';
+            }
+            return response()->json(['success' => 'Notes added successfully','data'=>$arr]);
+        }
     }
 }

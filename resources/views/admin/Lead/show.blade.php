@@ -173,7 +173,9 @@
                                     </div>
                                     {!! Form::close() !!}
                                 <div class="col-sm-12" id="notes">
-                                    
+                                    @foreach($leadnotes as $notes)
+
+                                    @endforeach
                                 </div>
                             </div>
                             <!-- Additional content sections -->
