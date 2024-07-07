@@ -24,6 +24,8 @@ use App\Models\DefaultLanguage;
 use App\Models\LeadFile;
 use App\Models\LeadNote;
 use DataTables;
+use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Support\Facades\Storage;
 
 class LeadController extends Controller
@@ -45,9 +47,6 @@ class LeadController extends Controller
                     }
                     $options .= '</select>';
                     return $options;
-                })
-                ->editColumn('source', function ($row) {
-                    return $row->getSource->source;
                 })
                 ->editColumn('staff', function ($row) {
                     return $row->getStaff->name;
@@ -309,19 +308,25 @@ class LeadController extends Controller
     }
 
     public function addNotes(Request $request){
-        dd($request->all());
         if($request->isMethod('post')){
             LeadNote::create([
                 'lead_id'=>$request->lead_id,
                 'note'=>$request->note,
-                'date_connected'=>$request->date,
-                'is_connected'=>$request->is_connected,
+                'connected_date'=>$request->date,
+                'is_connacted'=>($request->is_connacted && $request->is_connacted == 1)?1:0,
                 'status'=>1
             ]);
             $data = LeadNote::where('lead_id',$request->lead_id)->get();
             $arr = '';
             foreach($data as $val){
-                $arr .= '';
+                if(auth()->user()->avatar && !empty(auth()->user()->avatar)){
+                    // Corrected this line to properly concatenate PHP variables
+                    $img = '<img src="' . asset(auth()->user()->avatar) . '" class="img-radius shadow" alt="User-Profile-Image" style="height:30px;" />';
+                }else{
+                    // Corrected this line to properly concatenate PHP variables
+                    $img = '<img src="' . asset('assets/img/profile.jpg') . '" class="img-radius shadow" alt="User-Profile-Image" style="height:30px;" />';
+                }
+                $arr .= $img.' <h3>'.auth()->user()->name.'</h3> <br /><p>Note added:'.date('d-m-Y H:i', strtotime($val->created)).'</p><p>'.$val->note.'</p>';
             }
             return response()->json(['success' => 'Notes added successfully','data'=>$arr]);
         }

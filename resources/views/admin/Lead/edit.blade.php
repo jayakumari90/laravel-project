@@ -54,12 +54,13 @@
                 <div class="col-md-6 col-lg-4">
                     <div class="form-group">
                         <label for="source"><small class="req text-danger">* </small>Source</label>
-                        <select class="form-select select2" id="sources" name="source">
+                        <!-- <select class="form-select select2" id="sources" name="source">
                             <option value=""></option>
                             @foreach($source as $val)
                             <option value="{{ $val->id}}" {{ ($lead_data->source && $lead_data->source == $val->id) ? 'selected="selected"' : '' }}>{{ $val->source}}</option>
                             @endforeach
-                        </select>
+                        </select> -->
+                        <input type="text" class="form-select select2" id="sources" name="source" {{ $val->id}}" {{ ($lead_data->source && !empty($lead_data->source)) ?$lead_data->source:''}}">
                         <span id="source-err" class="error"></span> 
                     </div>
                 </div>

@@ -93,7 +93,7 @@
                                             </tr>
                                             <tr>
                                             <th scope="col">Source</th>
-                                            <td>{{$leads->getSource->source}}</td>
+                                            <td>{{$leads->source}}</td>
                                             </tr>
                                             <tr>
                                             <th scope="col">Website</th>
@@ -174,7 +174,12 @@
                                     {!! Form::close() !!}
                                 <div class="col-sm-12" id="notes">
                                     @foreach($leadnotes as $notes)
-
+                                    @if(Auth::user()->avatar && !empty(Auth::user()->avatar))
+                                        <img src="{{asset(Auth::user()->avatar)}}" class="img-radius shadow" alt="User-Profile-Image" style="height:30px;" />
+                                    @else
+                                        <img src="{{asset('assets/img/profile.jpg')}}" class="img-radius shadow" alt="User-Profile-Image" style="height:30px;" />
+                                    @endif
+                                    <h3>{{Auth::user()->name}}</h3><p>Note added:{{date('d-m-Y H:i', strtotime($notes->created))}}</p><p>{{$notes->note}}</p>
                                     @endforeach
                                 </div>
                             </div>
@@ -222,15 +227,6 @@ $(document).ready(function() {
                 setTimeout(() => {
                     $('#note-result').html('');
                 }, 1000);
-            },
-            error: function(response) {
-                let errors = response.responseJSON.errors;
-                let errorHtml = '<div class="alert alert-danger"><ul>';
-                $.each(errors, function(key, value) {
-                    errorHtml += '<li>' + value + '</li>';
-                });
-                errorHtml += '</ul></div>';
-                $('#note-result').html(errorHtml);
             }
         });
     });

@@ -142,8 +142,8 @@
 
   function exportLeads(format) {
     if(format != '' && format != 'export'){
-      var url = "{{ route('lead.export',":format") }}";
-      url = url.replace(':format', format);
+      var url = '{{ route("lead.export", ":format") }}';
+        url = url.replace(':format', format);
         $.ajax({
             url: url,
             type: 'GET',

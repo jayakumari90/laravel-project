@@ -30,7 +30,7 @@ class StoreLeadRequest extends FormRequest
             'phone' => 'string|max:20',
             'address' => 'nullable|string|max:255',
             'lead' => 'required|integer',
-            'source' => 'required|integer',
+            'source' => 'required|string',
             'staff' => 'integer',
             'tag' => 'nullable|string|max:255',
             'position' => 'nullable|string|max:255',
