@@ -9,6 +9,7 @@ use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\LeadController;
+use App\Http\Controllers\Admin\CustomerController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -43,6 +44,13 @@ Route::group(['middleware'=>'auth'],function()
     Route::post('/lead-import',[LeadController::class,'import'])->name('lead.import');
     Route::post('/lead-upload',[LeadController::class,'uploadFile'])->name('lead.uploadFile');
     Route::post('/lead-notes',[LeadController::class,'addNotes'])->name('lead.addNotes');
+
+    Route::any('/customer', [CustomerController::class, 'list'])->name('customer.list');
+    Route::get('customer/export/{format}', [CustomerController::class, 'export'])->name('customer.export');
+   // Route::get('/lead/{id}', [LeadController::class, 'show'])->name('lead.show');
+   // Route::get('/lead/edit/{id}', [LeadController::class, 'edit'])->name('lead.edit');
+    
+
 
 
 });

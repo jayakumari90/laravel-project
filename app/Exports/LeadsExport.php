@@ -21,9 +21,9 @@ class LeadsExport implements FromCollection, WithHeadings
             'getDefaultLanguage:id,name'
         ])
         ->get()
-        ->map(function($lead) {
+        ->map(function($lead, $index) {
             return [
-                'id' => $lead->id,
+                'id' =>  $index + 1,
                 'name' => $lead->name,
                 'company' => $lead->company,
                 'email' => $lead->email,

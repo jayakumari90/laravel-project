@@ -48,6 +48,14 @@
                 </a>
                    
               </li>
+              <li class="nav-item">
+              <a href="{{ route('customer.list') }}">
+                  <i class="fas fa-layer-group"></i>
+                  <p>Customer</p>
+                  <span class="caret"></span>
+                </a>
+                   
+              </li>
               
             </ul>
           </div>
