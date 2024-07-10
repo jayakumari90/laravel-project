@@ -9,7 +9,10 @@ use Illuminate\Support\Facades\File;
 use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use App\Exports\CustomerExport;
+use App\Http\Requests\StoreCustomerRequest;
 use App\Models\User;
+use App\Models\Country;
+use App\Models\DefaultLanguage;
 use DataTables;
 
 
@@ -33,6 +36,33 @@ class CustomerController extends Controller
         }
     
         return view('admin.customer.list');
+    }
+
+    public function add(Request $request){
+        $countries = Country::get();
+        $languages = DefaultLanguage::where('status',1)->get();
+        return view('admin.customer.add',compact('countries','languages'));
+    }
+
+    public function store(StoreCustomerRequest $request){
+        if($request->isMethod('post')){
+            User::Create([
+                'company'=>$request->company,
+                'vat_number'=>$request->vat_number,
+                'phone_number'=>$request->phone_number,
+                'website'=>$request->website,
+                'groups'=>implode(',',$request->groups),
+                'currency'=>$request->currency,
+                'default_language'=>$request->default_language,
+                'address'=>$request->address,
+                'country'=>$request->country,
+                'state'=>$request->state,
+                'city'=>$request->city,
+                'zipcode'=>$request->zipcode,
+                'status'=>1
+            ]);
+            return response()->json(['status'=>true,'success' => 'Customer added successfully.','redirect_url' => route('customer.list')]);
+        }
     }
 
     public function export($format)

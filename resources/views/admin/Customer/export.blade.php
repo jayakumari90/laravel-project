@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Leads Export</title>
+    <title>Customer Export</title>
     <style>
         table {
             width: 100%;
@@ -17,7 +17,7 @@
     </style>
 </head>
 <body>
-    <h1>Leads Export</h1>
+    <h1>Customer Export</h1>
     <table>
         <thead>
             <tr>

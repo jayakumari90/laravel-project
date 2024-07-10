@@ -208,7 +208,7 @@
         $(".smartsearch_keyword").select2({
     multiple: true,
 });
-        $('#country').on('change', function() {
+$('#country').on('change', function() {
     var country = $(this).val();
     $.ajax({
         url: '{{ route('getStates') }}',

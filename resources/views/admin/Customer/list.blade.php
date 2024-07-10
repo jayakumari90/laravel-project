@@ -26,8 +26,8 @@
         </li>
       </ul>
     </div>
-    <!-- <a href="{{ route('lead.add') }}" class="btn btn-info">New Customer</a>
-    <a href="{{ route('lead.importlead') }}" class="btn btn-info">Import Customer</a> -->
+     <a href="{{ route('customer.add') }}" class="btn btn-info">New Customer</a>
+    <!--<a href="{{ route('lead.importlead') }}" class="btn btn-info">Import Customer</a> -->
     <div class="row">
       <div class="col-md-12">
         <div class="card">

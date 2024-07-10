@@ -47,6 +47,9 @@ Route::group(['middleware'=>'auth'],function()
 
     Route::any('/customer', [CustomerController::class, 'list'])->name('customer.list');
     Route::get('customer/export/{format}', [CustomerController::class, 'export'])->name('customer.export');
+    Route::any('/customer/add', [CustomerController::class, 'add'])->name('customer.add');
+    Route::any('/customer/store', [CustomerController::class, 'store'])->name('customer.store');
+
    // Route::get('/lead/{id}', [LeadController::class, 'show'])->name('lead.show');
    // Route::get('/lead/edit/{id}', [LeadController::class, 'edit'])->name('lead.edit');
     
