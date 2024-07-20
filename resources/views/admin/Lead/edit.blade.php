@@ -38,7 +38,7 @@
                 <!-- CSRF Token -->
                 {!! Form::token() !!}
                 <div class="row">
-                    <input type="hidden" name="lead_id" id="lead_id" value="{{$lead_data->id}}">
+                <input type="hidden" name="lead_id" id="lead_id" value="{{$lead_data->id}}">
                 <div class="col-md-6 col-lg-4">
                     <div class="form-group">
                         <label for="leads"><small class="req text-danger">* </small>Lead</label>
@@ -57,10 +57,10 @@
                         <!-- <select class="form-select select2" id="sources" name="source">
                             <option value=""></option>
                             @foreach($source as $val)
-                            <option value="{{ $val->id}}" {{ ($lead_data->source && $lead_data->source == $val->id) ? 'selected="selected"' : '' }}>{{ $val->source}}</option>
+                            <option value="{{ $val->id}}">{{ $val->source}}</option>
                             @endforeach
                         </select> -->
-                        <input type="text" class="form-select select2" id="sources" name="source" {{ $val->id}}" {{ ($lead_data->source && !empty($lead_data->source)) ?$lead_data->source:''}}">
+                        <input type="text" class="form-control" id="sources" name="source">
                         <span id="source-err" class="error"></span> 
                     </div>
                 </div>
@@ -78,10 +78,10 @@
                 <div class="col-md-6 col-lg-4">
                     <div class="form-group">
                         <label for="tages">Tages</label>
-                        <select class="form-select select2" name="tag[]" id="tasks" multiple="multiple">
+                        <select class="form-select select2" name="tag[]" id="tfgyhtygfuytutyyu" multiple="multiple">
                         
                         @foreach($tags as $tag)
-                        <option value="{{ $tag->tag_name}}" {{ ($lead_data->tag && in_array($tag->tag_name,explode(",",$lead_data->tag))) ? 'selected="selected"' : '' }}>{{ $tag->tag_name}}</option>
+                        <option value="{{ $tag->tag_name}}">{{ $tag->tag_name}}</option>
                         @endforeach
                         </select>
                     </div>
@@ -96,14 +96,14 @@
                 <div class="col-md-6 col-lg-4">
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" class="form-control" id="cemail" placeholder="Email" name="email" value="{{($lead_data->email)?$lead_data->email:''}}" />
+                        <input type="email" class="form-control" id="email" placeholder="Email" name="email" value="{{($lead_data->email)?$lead_data->email:''}}" />
                         <span id="email-err" class="error"></span> 
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4">
                     <div class="form-group">
                         <label for="phone">Phone</label>
-                        <input type="text" class="form-control" id="phone-no" placeholder="Phone" name="phone" value="{{($lead_data->phone)?$lead_data->phone:''}}" />
+                        <input type="text" class="form-control" id="phone-no" placeholder="Phone" name="phone"  value="{{($lead_data->phone)?$lead_data->phone:''}}" />
                         <span id="phone-err" class="error"></span> 
                     </div>
                 </div>
@@ -117,7 +117,7 @@
                 <div class="col-md-6 col-lg-4">
                     <div class="form-group">
                         <label for="position">Position</label>
-                        <input type="text" class="form-control" id="position" placeholder="Position" name="position" value="{{($lead_data->position)?$lead_data->position:''}}" />
+                        <input type="text" class="form-control" id="position" placeholder="Position" name="position"  value="{{($lead_data->position)?$lead_data->position:''}}" />
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4">
@@ -150,6 +150,12 @@
                 </div>
                 <div class="col-md-6 col-lg-4">
                     <div class="form-group">
+                        <label for="zipcode">Zipcode</label>
+                        <input type="text" class="form-control" id="zipcode" placeholder="Zipcode" name="zipcode" value="{{($lead_data->zipcode)?$lead_data->city:''}}" />
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="form-group">
                         <label for="website">Website</label>
                         <input type="text" class="form-control" id="website" placeholder="Website" name="website" value="{{($lead_data->website)?$lead_data->website:''}}" />
                     </div>
@@ -157,7 +163,7 @@
                 <div class="col-md-6 col-lg-4">
                     <div class="form-group">
                         <label for="lead_value">Lead Value</label>
-                        <input type="text" class="form-control" id="lead_value" placeholder="Lead Value" name="lead_value" value="{{($lead_data->lead_value)?$lead_data->lead_value:''}}" />
+                        <input type="text" class="form-control" id="lead_value" placeholder="Lead Value" name="lead_value"  value="{{($lead_data->lead_value)?$lead_data->lead_value:''}}" />
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4">
@@ -174,7 +180,7 @@
                 <div class="col-md-6 col-lg-4">
                     <div class="form-group">
                         <label for="company">Company</label>
-                        <input type="text" class="form-control" id="company" placeholder="Company" name="company" value="{{($lead_data->company)?$lead_data->company:''}}" />
+                        <input type="text" class="form-control" id="company" placeholder="Company" name="company"  value="{{($lead_data->company)?$lead_data->company:''}}" />
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4">
@@ -192,7 +198,6 @@
                 
                 <div class="card-action">
                 <button class="btn btn-success">Submit</button>
-                <button class="btn btn-danger">Cancel</button>
                 </div>
                 {!! Form::close() !!}
             </div>
@@ -211,7 +216,7 @@
         $(".smartsearch_keyword").select2({
     multiple: true,
 });
-        $('#country').on('change', function() {
+$('#country').on('change', function() {
     var country = $(this).val();
     $.ajax({
         url: '{{ route('getStates') }}',
@@ -231,7 +236,7 @@
 $('#lead-form').on('submit', function(event) {
     event.preventDefault();
         let formData = new FormData(this);
-        let selectedTags = $('#tasks').val();
+        let selectedTags = $('#tfgyhtygfuytutyyu').val();
         console.log("selectedTags",selectedTags);
         formData.append('tag', selectedTags); 
         $.ajax({
@@ -243,7 +248,7 @@ $('#lead-form').on('submit', function(event) {
             success: function(data) {
                 console.log('data',data);
                 if(data.status){
-                    window.location.href=data.redirect_url;
+                    window.location.href= data.redirect_url;
                 }else{
                     let errors = data.data;
                     for (let key in errors) {

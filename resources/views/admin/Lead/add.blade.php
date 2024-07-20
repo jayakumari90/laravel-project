@@ -147,6 +147,12 @@
                 </div>
                 <div class="col-md-6 col-lg-4">
                     <div class="form-group">
+                        <label for="zipcode">Zipcode</label>
+                        <input type="text" class="form-control" id="zipcode" placeholder="Zipcode" name="zipcode" />
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="form-group">
                         <label for="website">Website</label>
                         <input type="text" class="form-control" id="website" placeholder="Website" name="website" />
                     </div>
@@ -189,7 +195,6 @@
                 
                 <div class="card-action">
                 <button class="btn btn-success">Submit</button>
-                <button class="btn btn-danger">Cancel</button>
                 </div>
                 {!! Form::close() !!}
             </div>

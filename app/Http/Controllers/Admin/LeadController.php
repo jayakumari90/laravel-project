@@ -146,6 +146,7 @@ class LeadController extends Controller
 
     public function update(StoreLeadRequest $request){
         if($request->isMethod('post')){
+           // dd($request->all());
             Lead::where('id',$request->lead_id)->Update([
                 'name'=>$request->name,
                 'email'=>$request->email,

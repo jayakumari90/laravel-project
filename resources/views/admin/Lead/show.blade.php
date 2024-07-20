@@ -266,7 +266,50 @@ $(document).ready(function() {
     });
 });
 
-
+$('#lead_more').on('change', function() {
+  if ($(this).val() != 'delete') {
+    var tag = `<a href="{{ route('lead.customer',$leads->id) }}" title="Convert to Customer" class="btn btn-success">Convert to Customer</a>`;
+    $('.cutomer-btn').html(tag);
+  } else {
+    Swal.fire({
+      title: "Confirm",
+      text: "Are you sure you want to delete this lead?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: "{{ route('lead.delete',$leads->id) }}",
+          method: "GET",
+          data: {
+            _token: "{{ csrf_token() }}",
+            lead_id: {{ $leads->id }}
+          },
+          success: function(response) {
+            if(response.success) {
+              Swal.fire(
+                'Deleted!',
+                'The lead has been deleted.',
+                'success'
+              ).then(() => {
+                window.location.href = "{{ route('lead.list') }}";
+              });
+            } else {
+              Swal.fire(
+                'Error!',
+                'There was an error deleting the lead.',
+                'error'
+              );
+            }
+          }
+        });
+      }
+    });
+  }
+});
 function openCity(cityName) {
     var i;
     var x = document.getElementsByClassName("city");

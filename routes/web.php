@@ -49,6 +49,13 @@ Route::group(['middleware'=>'auth'],function()
     Route::get('customer/export/{format}', [CustomerController::class, 'export'])->name('customer.export');
     Route::any('/customer/add', [CustomerController::class, 'add'])->name('customer.add');
     Route::any('/customer/store', [CustomerController::class, 'store'])->name('customer.store');
+    Route::get('/customer/{id}', [CustomerController::class, 'show'])->name('customer.show');
+    Route::post('/customer/update', [CustomerController::class, 'update'])->name('customer.update');
+    Route::post('/customer/update-bill', [CustomerController::class, 'updateBillingInfo'])->name('customer.updatebill');
+    Route::any('/customer/notes/{id}/', [CustomerController::class, 'notes'])->name('customer.notes');
+    Route::any('/customer/addnotes', [CustomerController::class, 'addNotes'])->name('customer.addnotes');
+    Route::post('/customer/notes', [CustomerController::class, 'getnotes'])->name('customer.getnotes');
+
 
    // Route::get('/lead/{id}', [LeadController::class, 'show'])->name('lead.show');
    // Route::get('/lead/edit/{id}', [LeadController::class, 'edit'])->name('lead.edit');
