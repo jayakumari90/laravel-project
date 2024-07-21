@@ -55,6 +55,7 @@ Route::group(['middleware'=>'auth'],function()
     Route::any('/customer/notes/{id}/', [CustomerController::class, 'notes'])->name('customer.notes');
     Route::any('/customer/addnotes', [CustomerController::class, 'addNotes'])->name('customer.addnotes');
     Route::post('/customer/notes', [CustomerController::class, 'getnotes'])->name('customer.getnotes');
+    Route::any('/customer/add-ticket/{id}', [CustomerController::class, 'ticket'])->name('customer.ticket');
 
 
    // Route::get('/lead/{id}', [LeadController::class, 'show'])->name('lead.show');

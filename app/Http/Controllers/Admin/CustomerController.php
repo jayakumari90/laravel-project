@@ -16,6 +16,8 @@ use App\Models\DefaultLanguage;
 use App\Models\State;
 use App\Models\CustomerBilling;
 use App\Models\Note;
+use App\Models\Tag;
+use App\Models\Project;
 use DataTables;
 
 
@@ -38,13 +40,13 @@ class CustomerController extends Controller
                 ->make(true);
         }
     
-        return view('admin.customer.list');
+        return view('admin.Customer.list');
     }
 
     public function add(Request $request){
         $countries = Country::get();
         $languages = DefaultLanguage::where('status',1)->get();
-        return view('admin.customer.add',compact('countries','languages'));
+        return view('admin.Customer.add',compact('countries','languages'));
     }
 
     public function store(StoreCustomerRequest $request){
@@ -76,7 +78,7 @@ class CustomerController extends Controller
         $countries = Country::get();
         $languages = DefaultLanguage::where('status',1)->get();
         $states = State::get();
-        return view('admin.customer.show',compact('customer','countries','languages','states','custbill'));
+        return view('admin.Customer.show',compact('customer','countries','languages','states','custbill'));
     }
 
     public function update(StoreCustomerRequest $request){
@@ -150,7 +152,7 @@ class CustomerController extends Controller
                 ->make(true);
         }
     
-        return view('admin.customer.notes',compact('id'));
+        return view('admin.Customer.notes',compact('id'));
     }
 
     public function addNotes(Request $request){
@@ -187,11 +189,18 @@ class CustomerController extends Controller
                 return Excel::download(new CustomerExport, 'customer.xlsx');
             case 'pdf':
                 $data = User::where('role',3)->orderBy('id', 'desc')->get();
-                $pdf = PDF::loadView('admin.customer.export', compact('data'));
+                $pdf = PDF::loadView('admin.Customer.export', compact('data'));
                 return $pdf->download('customer.pdf');
             default:
                 return back();
         }
+    }
+
+    public function ticket(Request $request, $id){
+        $tags = Tag::where('status',1)->get();
+        $staffs = User::where('role',3)->where('status',1)->get();
+        $projects = Project::where('status',1)->get();
+        return view('admin.Customer.ticket',compact('tags','staffs','projects'));
     }
 
 }

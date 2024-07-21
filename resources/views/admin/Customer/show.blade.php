@@ -99,7 +99,7 @@
                             <li><a href="#">Profile</a></li>
                             <li><a href="{{ route('customer.notes',$customer->id)}}">Notes</a></li>
                             <li><a href="#">Invoice</a></li>
-                            <li><a href="#">Tickets</a></li>
+                            <li><a href="{{ route('customer.ticket',$customer->id)}}">Tickets</a></li>
                             <li><a href="#">Attachment</a></li>
                         </ul>
 
