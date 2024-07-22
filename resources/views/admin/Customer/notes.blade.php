@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', 'Edit Customer')
+@section('title', 'Notes')
 @section('content')
 <!-- DataTables CSS -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">

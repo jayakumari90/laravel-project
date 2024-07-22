@@ -56,6 +56,9 @@ Route::group(['middleware'=>'auth'],function()
     Route::any('/customer/addnotes', [CustomerController::class, 'addNotes'])->name('customer.addnotes');
     Route::post('/customer/notes', [CustomerController::class, 'getnotes'])->name('customer.getnotes');
     Route::any('/customer/add-ticket/{id}', [CustomerController::class, 'ticket'])->name('customer.ticket');
+    Route::any('/customer/store-ticket', [CustomerController::class, 'storeTicket'])->name('customer.storeTicket');
+    Route::any('/customer/ticket-list/{id}', [CustomerController::class, 'ticketList'])->name('customer.ticketList');
+    Route::any('/customer/update-ticket-status', [CustomerController::class, 'updateTicketStatus'])->name('customer.updateTicketStatus');
 
 
    // Route::get('/lead/{id}', [LeadController::class, 'show'])->name('lead.show');

@@ -18,6 +18,8 @@ use App\Models\CustomerBilling;
 use App\Models\Note;
 use App\Models\Tag;
 use App\Models\Project;
+use App\Models\Ticket;
+use App\Models\LeadStatus;
 use DataTables;
 
 
@@ -200,7 +202,93 @@ class CustomerController extends Controller
         $tags = Tag::where('status',1)->get();
         $staffs = User::where('role',3)->where('status',1)->get();
         $projects = Project::where('status',1)->get();
-        return view('admin.Customer.ticket',compact('tags','staffs','projects'));
+        return view('admin.Customer.ticket',compact('tags','staffs','projects','id'));
     }
+
+    public function storeTicket(Request $request){
+        if($request->isMethod('post')){
+            $validator = Validator::make($request->all(), [
+                'subject' => 'required',
+                'department' => 'required'
+            ]);
+
+            if ($validator->fails()) {
+                //$error = $this->validationHandle($validator->messages());
+                return response()->json([
+
+                    'status'   => false,
+        
+                    'message'   => 'Validation errors',
+        
+                    'data'      => $validator->errors()
+        
+                ]);
+                //response()->json(['status' => false, 'message' => $error]);
+            }
+            $base_url =  url('/');
+            if(!empty($request->file('attachment'))){
+                $image = $request->attachment;
+                $filename = 'user_'.time().'.'.$image->getClientOriginalExtension();
+                $destinationPath = public_path('/uploads/users');
+                $image->move($destinationPath, $filename);
+                $attachment = $base_url.'/public/uploads/'.$filename;
+            }
+            Ticket::create([
+                'customer_id'=>$request->customer_id,
+                'subject'=>$request->subject,
+                'tage'=>$request->tag,
+                'assigned'=>$request->staff,
+                'name'=>$request->name,
+                'email'=>$request->email,
+                'priority'=>$request->priority,
+                'service'=>$request->service,
+                'department'=>$request->department,
+                'cc'=>$request->cc,
+                'ticket_body'=>$request->ticket_body,
+                'knoladge_link'=>$request->knoladge_link,
+                'description'=>$request->description,
+                'attachment'=>$attachment,
+                'status'=>1
+            ]);
+            return response()->json(['success' => 'Ticket added successfully.','redirect_url'=>route('customer.ticketList',$request->customer_id)]);
+        }
+    }
+
+    public function ticketList(Request $request,$id) {
+        if ($request->ajax()) {
+            $data = Ticket::orderBy('id','desc')->get();
+            
+            return Datatables::of($data)->addIndexColumn()
+                ->addColumn('status', function ($row) {
+                    if($row->status == 1){
+                        $btn = '<a href="javascript:void(0)" class="btn btn-danger" title="Status" onclick="updateTicketStatus('.$row->id.',0)">Deactivate</a>';
+                    }else{
+                        $btn = '<a href="javascript:void(0)" class="btn btn-success" title="Status" onclick="updateTicketStatus('.$row->id.',1)">Activate</a>';
+                    } 
+                    return $btn;
+                    //return $status;
+                })
+                ->addColumn('action', function($row) {
+                    $btn = '<a href="javascript:void(0)" title="Edit" onclick="updateNote('.$row->id.')"> <i class="fas fa-pen-square"></i></a>';
+                     return $btn;
+                })
+                ->editColumn('created_at', function($row) {
+                    return date('Y-m-d H:i:s', strtotime($row->created_at));
+                })
+                ->rawColumns(['status','action', 'customer']) // Ensure HTML is rendered
+                ->make(true);
+            }
+            return view('admin.Customer.ticketList',compact('id'));
+    }
+    public function updateTicketStatus(Request $request){
+        if($request->isMethod('post')){
+            Ticket::where('id',$request->id)->update([
+                'status'=>$request->status
+            ]);
+            return response()->json(['success'=>true, 'msg'=>'Lead status updated successfully']);
+        }
+    }
+    
+    
 
 }
