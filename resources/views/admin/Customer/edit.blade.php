@@ -124,16 +124,30 @@
                             </div>
                             <div class="col-md-6 col-lg-4">
                                 <div class="form-group">
-                                    <label for="company"><small class="req text-danger"></small>VAT Number</label>
+                                    <label for="name"><small class="req text-danger">* </small>Name</label>
+                                    <input type="text" class="form-control" name="name" id="name">
+                                    <span id="name-err" class="error"></span>                       
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4">
+                                <div class="form-group">
+                                    <label for="email"><small class="req text-danger">* </small>Email</label>
+                                    <input type="text" class="form-control" name="email" id="email">
+                                    <span id="email-err" class="error"></span>                       
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4">
+                                <div class="form-group">
+                                    <label for="vat_number"><small class="req text-danger"></small>VAT Number</label>
                                     <input type="text" class="form-control" name="vat_number" id="vat_number">
                                     <span id="vat_number-err" class="error"></span>                       
                                 </div>
                             </div>
                             <div class="col-md-6 col-lg-4">
                                 <div class="form-group">
-                                    <label for="company"><small class="req text-danger"></small>Phone</label>
+                                    <label for="phone_number"><small class="req text-danger"></small>Phone</label>
                                     <input type="text" class="form-control" name="phone_number" id="phone_number">
-                                    <span id="vat_number-err" class="error"></span>                       
+                                    <span id="phone_number-err" class="error"></span>                       
                                 </div>
                             </div>
                             <div class="col-md-6 col-lg-4">

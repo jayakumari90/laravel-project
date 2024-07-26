@@ -58,48 +58,55 @@ class LoginController extends Controller
     /** login with databases */
     public function authenticate(Request $request)
     {
-        DB::beginTransaction();
         try {
             $request->validate([
                 'email' => 'required|string|email',
                 'password' => 'required|string',
             ]);
-
-            $username  = $request->email;
+    
+            $username = $request->email;
             $password = $request->password;
-
-
+    
+            // Log for debugging
+    
             // Manually verify the password
             $user = User::where('email', $username)->first();
-            if ($user && Hash::check($password, $user->password)) {
-
-                Auth::login($user);
-                Session::put('name', $user->name);
-                Session::put('email', $user->email);
-
-                Toastr::success('Login successfully :)', 'Success');
-
-                DB::commit();
-
-                return redirect()->intended('home');
+            if ($user) {
+    
+                if (Hash::check($password, $user->password)) {
+                    Auth::login($user);
+                    Session::put('name', $user->name);
+                    Session::put('email', $user->email);
+    
+                    Toastr::success('Login successfully :)', 'Success');
+    
+    
+                    return redirect()->intended('home');
+                } else {
+    
+                    // Authentication failed
+                    Toastr::error('Fail, WRONG USERNAME OR PASSWORD :)', 'Error');
+    
+    
+                    return redirect('login');
+                }
             } else {
-
-                // Authentication failed
+    
                 Toastr::error('Fail, WRONG USERNAME OR PASSWORD :)', 'Error');
-
-                DB::commit();
-
+    
+    
                 return redirect('login');
             }
         } catch (\Exception $e) {
-            DB::rollback();
-
-
+    
+            // Log the exception
+    
             Toastr::error('Fail, LOGIN :)', 'Error');
-
+    
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
+    
 
     /** logout */
     public function logout()

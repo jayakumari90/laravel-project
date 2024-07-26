@@ -282,7 +282,7 @@ $('#ticket-form').on('submit', function(event) {
             processData: false,
             contentType: false,
             success: function(data) {
-                console.log('data',data.redirect_url);
+                console.log('data',data);
                 if(data.status){
                     window.location.href=data.redirect_url;
                 }else{

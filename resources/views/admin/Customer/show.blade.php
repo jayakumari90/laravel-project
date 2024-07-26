@@ -98,9 +98,9 @@
                         <ul>
                             <li><a href="#">Profile</a></li>
                             <li><a href="{{ route('customer.notes',$customer->id)}}">Notes</a></li>
-                            <li><a href="#">Invoice</a></li>
-                            <li><a href="{{ route('customer.ticket',$customer->id)}}">Tickets</a></li>
-                            <li><a href="#">Attachment</a></li>
+                            <!-- <li><a href="#">Invoice</a></li> -->
+                            <li><a href="{{ route('customer.ticketList',$customer->id)}}">Tickets</a></li>
+                            <!-- <li><a href="#">Attachment</a></li> -->
                         </ul>
 
 
@@ -129,6 +129,20 @@
                                         <label for="company"><small class="req text-danger">* </small>Company</label>
                                         <input type="text" class="form-control" name="company" id="company" value="{{$customer->company}}">
                                         <span id="company-err" class="error"></span>                       
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="name"><small class="req text-danger">* </small>Name</label>
+                                        <input type="text" class="form-control" name="name" id="name" value="{{$customer->name}}">
+                                        <span id="name-err" class="error"></span>                       
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="form-group">
+                                        <label for="email"><small class="req text-danger">* </small>Email</label>
+                                        <input type="text" class="form-control" name="email" id="email" value="{{$customer->email}}">
+                                        <span id="email-err" class="error"></span>                       
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-lg-4">
@@ -239,7 +253,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="Billing" class="w3-container w3-display-container city">
+                        <div id="Billing" class="w3-container w3-display-container city" style="display:none">
                             <span onclick="this.parentElement.style.display='none'" class="w3-button w3-large w3-display-topright">&times;</span>
                             <h2>Billing & Shipping</h2>
                             {!! Form::open(['method' => 'post', 'id'=>'billing-form']) !!}     

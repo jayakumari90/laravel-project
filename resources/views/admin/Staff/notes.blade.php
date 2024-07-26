@@ -103,7 +103,7 @@
                             <li><a href="{{route('customer.show', $id)}}">Profile</a></li>
                             <li><a href="{{ route('customer.notes',$id)}}">Notes</a></li>
                             <!-- <li><a href="#">Invoice</a></li> -->
-                            <li><a href="{{ route('customer.ticketList',$id)}}">Tickets</a></li>
+                            <li><a href="{{ route('customer.ticket',$id)}}">Tickets</a></li>
                             <!-- <li><a href="#">Attachment</a></li> -->
                         </ul>
 

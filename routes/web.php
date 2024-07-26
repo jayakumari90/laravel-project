@@ -10,6 +10,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\LeadController;
 use App\Http\Controllers\Admin\CustomerController;
+use App\Http\Controllers\Admin\StaffController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -26,8 +27,16 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
+// Route::group(['middleware' => ['role:admin']], function () {
+//     Route::get('/admin', [AdminController::class, 'index']);
+// });
+
+// Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('can:view dashboard');
+
+
 Route::group(['middleware'=>'auth'],function()
 {
+    
     Route::get('/home', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::any('/lead', [LeadController::class, 'list'])->name('lead.list');
     Route::any('/lead/add', [LeadController::class, 'add'])->name('lead.add');
@@ -47,6 +56,8 @@ Route::group(['middleware'=>'auth'],function()
 
     Route::any('/customer', [CustomerController::class, 'list'])->name('customer.list');
     Route::get('customer/export/{format}', [CustomerController::class, 'export'])->name('customer.export');
+    Route::get('customer/import-customer', [CustomerController::class, 'importCustomer'])->name('customer.importcustomer');
+    Route::post('customer/customer-import',[CustomerController::class,'import'])->name('customer.import');
     Route::any('/customer/add', [CustomerController::class, 'add'])->name('customer.add');
     Route::any('/customer/store', [CustomerController::class, 'store'])->name('customer.store');
     Route::get('/customer/{id}', [CustomerController::class, 'show'])->name('customer.show');
@@ -59,10 +70,13 @@ Route::group(['middleware'=>'auth'],function()
     Route::any('/customer/store-ticket', [CustomerController::class, 'storeTicket'])->name('customer.storeTicket');
     Route::any('/customer/ticket-list/{id}', [CustomerController::class, 'ticketList'])->name('customer.ticketList');
     Route::any('/customer/update-ticket-status', [CustomerController::class, 'updateTicketStatus'])->name('customer.updateTicketStatus');
-
-
-   // Route::get('/lead/{id}', [LeadController::class, 'show'])->name('lead.show');
-   // Route::get('/lead/edit/{id}', [LeadController::class, 'edit'])->name('lead.edit');
+    
+    Route::any('/staff', [StaffController::class, 'list'])->name('staff.list');
+    Route::any('/staff/update-staff-status', [StaffController::class, 'updateStaffStatus'])->name('staff.updateStaffStatus');
+    Route::any('/staff/add', [StaffController::class, 'add'])->name('staff.add');
+    Route::any('/staff/store', [StaffController::class, 'store'])->name('staff.store');
+    Route::get('/staff/{id}', [StaffController::class, 'show'])->name('staff.show');
+    Route::get('staff/export/{format}', [StaffController::class, 'export'])->name('staff.export');
     
 
 

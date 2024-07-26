@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
 use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use App\Exports\CustomerExport;
+use App\Imports\CustomerImport;
 use App\Http\Requests\StoreCustomerRequest;
 use App\Models\User;
 use App\Models\Country;
@@ -27,7 +29,7 @@ class CustomerController extends Controller
 {
     public function list(Request $request) {
         if ($request->ajax()) {
-            $data = User::orderBy('id','desc')->get();
+            $data = User::where('role',5)->orderBy('id','desc')->get();
             
             return Datatables::of($data)->addIndexColumn()
                     ->addColumn('action', function($row) {
@@ -41,8 +43,10 @@ class CustomerController extends Controller
                 ->rawColumns(['action', 'customer']) // Ensure HTML is rendered
                 ->make(true);
         }
-    
-        return view('admin.Customer.list');
+        $totalcustomer = User::where('role',5)->count();
+        $totalactive = User::where('role',5)->where('status',1)->count();
+        $totalinactive = User::where('role',5)->where('status',0)->count();
+        return view('admin.Customer.list',compact('totalcustomer','totalactive','totalinactive'));
     }
 
     public function add(Request $request){
@@ -53,8 +57,12 @@ class CustomerController extends Controller
 
     public function store(StoreCustomerRequest $request){
         if($request->isMethod('post')){
+            $pass='123456';
             $user = User::Create([
                 'company'=>$request->company,
+                'name'=>$request->name,
+                'email'=>$request->email,
+                'password'=>Hash::make($pass),
                 'vat_number'=>$request->vat_number,
                 'phone_number'=>$request->phone_number,
                 'website'=>$request->website,
@@ -88,6 +96,8 @@ class CustomerController extends Controller
            // dd($request->all());
             User::where('id', $request->customer_id)->update([
                 'company'=>$request->company,
+                'email'=>$request->email,
+                'name'=>$request->name,
                 'vat_number'=>$request->vat_number,
                 'phone_number'=>$request->phone_number,
                 'website'=>$request->website,
@@ -233,10 +243,11 @@ class CustomerController extends Controller
                 $image->move($destinationPath, $filename);
                 $attachment = $base_url.'/public/uploads/'.$filename;
             }
+            //dd($request->all());
             Ticket::create([
                 'customer_id'=>$request->customer_id,
                 'subject'=>$request->subject,
-                'tage'=>$request->tag,
+                'tags'=>$request->tag,
                 'assigned'=>$request->staff,
                 'name'=>$request->name,
                 'email'=>$request->email,
@@ -250,7 +261,7 @@ class CustomerController extends Controller
                 'attachment'=>$attachment,
                 'status'=>1
             ]);
-            return response()->json(['success' => 'Ticket added successfully.','redirect_url'=>route('customer.ticketList',$request->customer_id)]);
+            return response()->json(['status'=>true, 'msg' => 'Ticket added successfully.','redirect_url'=>route('customer.ticketList',$request->customer_id)]);
         }
     }
 
@@ -289,6 +300,33 @@ class CustomerController extends Controller
         }
     }
     
-    
+    public function importCustomer(){
+        $customer = User::where('role',5)->where('status',1)->get();
+        return view('admin.Customer.importcustomer', compact('customer'));
+    }
 
+    public function import(Request $request){
+        if ($request->isMethod('post')) {
+            $request->validate([
+                'file' => 'required|file|mimes:csv,txt',
+            ]);
+
+            $file = $request->file('file');
+            //dd($request->all());
+            if (!$file->isValid()) {
+                return redirect()->back()->with('error', 'Invalid file upload.');
+            }
+
+            try {
+                Excel::import(new CustomerImport, $file);
+                
+                $data = User::where('import_update',1)->get();
+                $pass = '123456';
+                User::where('import_update',1)->update(['groups'=>implode(',',$request->groups),'password'=>Hash::make($pass),'import_update'=>0]);
+                return redirect()->back()->with('success', 'Customer imported successfully.');
+            } catch (\Exception $e) {
+                return redirect()->back()->with('error', 'Failed to import leads.');
+            }
+        }
+    }
 }

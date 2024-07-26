@@ -56,6 +56,20 @@
                             </div>
                             <div class="col-md-6 col-lg-4">
                                 <div class="form-group">
+                                    <label for="name"><small class="req text-danger">* </small>Name</label>
+                                    <input type="text" class="form-control" name="name" id="name">
+                                    <span id="name-err" class="error"></span>                       
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4">
+                                <div class="form-group">
+                                    <label for="email"><small class="req text-danger">* </small>Email</label>
+                                    <input type="text" class="form-control" name="email" id="email">
+                                    <span id="email-err" class="error"></span>                       
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4">
+                                <div class="form-group">
                                     <label for="company"><small class="req text-danger"></small>VAT Number</label>
                                     <input type="text" class="form-control" name="vat_number" id="vat_number">
                                     <span id="vat_number-err" class="error"></span>                       
@@ -159,7 +173,7 @@
                         </div>
                     </div>
                 
-                    <div id="Billing" class="w3-container w3-display-container city">
+                    <div id="Billing" class="w3-container w3-display-container city" style="display:none">
                         <span onclick="this.parentElement.style.display='none'" class="w3-button w3-large w3-display-topright">&times;</span>
                         <h2>Billing & Shipping</h2>
                         {!! Form::open(['method' => 'post', 'id'=>'billing-form']) !!}     

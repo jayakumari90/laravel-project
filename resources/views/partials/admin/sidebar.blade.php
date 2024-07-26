@@ -56,6 +56,14 @@
                 </a>
                    
               </li>
+              <li class="nav-item">
+              <a href="{{ route('staff.list') }}">
+                  <i class="fas fa-layer-group"></i>
+                  <p>Staff</p>
+                  <span class="caret"></span>
+                </a>
+                   
+              </li>
               
             </ul>
           </div>

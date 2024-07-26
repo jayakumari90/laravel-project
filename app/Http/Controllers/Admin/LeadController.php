@@ -274,7 +274,7 @@ class LeadController extends Controller
             try {
                 Excel::import(new LeadImport, $file);
                 $data = Lead::where('import_update',1)->get();
-                Lead::where('import_update',1)->update(['lead'=>$request->lead,'source'=>$request->source,'staff'=>$request->staff]);
+                Lead::where('import_update',1)->update(['lead'=>$request->lead,'source'=>$request->source,'staff'=>$request->staff,'import_update'=>0]);
                 return redirect()->back()->with('success', 'Leads imported successfully.');
             } catch (\Exception $e) {
                 \Log::error('Import failed:', ['error' => $e->getMessage()]);

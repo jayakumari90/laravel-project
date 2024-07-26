@@ -31,8 +31,8 @@
                                 <div class="col-sm-3">
                                     <select class="form-control" id="lead_more" name="lead_more">
                                     <option value="">More</option>
-                                    <option value="7">Mark as Lost</option>
-                                    <option value="2">Mark as Junk</option>
+                                    <option value="7">Mark as Junk/Lost</option>
+                                    <option value="6">Converted </option>
                                     <option value="delete">Delete Lead</option>
                                     </select>
                                 </div>
@@ -267,10 +267,13 @@ $(document).ready(function() {
 });
 
 $('#lead_more').on('change', function() {
-  if ($(this).val() != 'delete') {
+  if ($(this).val() != 'delete' && $(this).val() != 7) {
     var tag = `<a href="{{ route('lead.customer',$leads->id) }}" title="Convert to Customer" class="btn btn-success">Convert to Customer</a>`;
     $('.cutomer-btn').html(tag);
-  } else {
+  } else if($(this).val() == 7){
+      
+  }else {
+      
     Swal.fire({
       title: "Confirm",
       text: "Are you sure you want to delete this lead?",

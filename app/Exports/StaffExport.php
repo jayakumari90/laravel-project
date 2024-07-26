@@ -1,29 +1,28 @@
 <?php
+
 namespace App\Exports;
 
 use App\Models\User;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class CustomerExport implements FromCollection, WithHeadings
+class StaffExport implements FromCollection, WithHeadings
 {
     /**
     * @return \Illuminate\Support\Collection
     */
     public function collection()
     {
-        return User::where('role',5)->orderBy('id', 'desc') // Correcting the orderBy method call
+        return $data = User::whereIn('role',[3,4])->with('getRole')->orderBy('id', 'desc') // Correcting the orderBy method call
             ->get()
             ->map(function($user, $index) {
                 return [
                     'id' => $index + 1,
-                    'company' => $user->company,
                     'name' => $user->name,
                     'email' => $user->email,
-                    'phone' => $user->phone,
+                    'role' => $user->getRole->role_type,
+                    'last_login,' => $user->last_login,
                     'status' => ($user->status == 1) ? 'Active' : 'Inactive',
-                    'groups' => $user->groups,
-                    'created_at' => $user->created_at
                 ];
             });
     }
@@ -32,13 +31,11 @@ class CustomerExport implements FromCollection, WithHeadings
     {
         return [
             'ID',
-            'Company',
-            'Name',
+            'Full Name',
             'Email',
-            'Phone',
-            'Active',
-            'Groups',
-            'Date Created'
+            'Role',
+            'Last Login',
+            'Status'
         ];
     }
 }
