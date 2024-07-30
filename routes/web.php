@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\LeadController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\StaffController;
+use App\Http\Controllers\Admin\RoleController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -38,6 +39,12 @@ Route::group(['middleware'=>'auth'],function()
 {
     
     Route::get('/home', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('/role', [RoleController::class, 'list'])->name('role.list');
+    Route::any('/role/add', [RoleController::class, 'add'])->name('role.add');
+    Route::any('/role/store', [RoleController::class, 'store'])->name('role.store');
+    Route::get('/role/edit/{id}', [RoleController::class, 'edit'])->name('role.edit');
+    Route::any('/role/update', [RoleController::class, 'update'])->name('role.update');
+    Route::any('/role/update-role-status', [RoleController::class, 'updateRoleStatus'])->name('role.updateRoleStatus');
     Route::any('/lead', [LeadController::class, 'list'])->name('lead.list');
     Route::any('/lead/add', [LeadController::class, 'add'])->name('lead.add');
     Route::any('/lead/store', [LeadController::class, 'store'])->name('lead.store');

@@ -111,18 +111,6 @@
                 </div>
                 <div class="col-md-6 col-lg-4">
                     <div class="form-group">
-                        <label for="source"><small class="req text-danger">* </small>Source</label>
-                        <select class="form-select select2" id="sources" name="source">
-                            <option value=""></option>
-                            @foreach($source as $val)
-                            <option value="{{ $val->id}}">{{ $val->source}}</option>
-                            @endforeach
-                        </select>
-                        <span id="source-err" class="error"></span> 
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="form-group">
                         <label for="staff">Assigned</label>
                         <select class="form-select select2" id="staff" name="staff">
                             <option value=""></option>

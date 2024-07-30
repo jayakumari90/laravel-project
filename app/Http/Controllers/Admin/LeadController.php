@@ -36,20 +36,23 @@ class LeadController extends Controller
             
             return Datatables::of($data)->addIndexColumn()
                 ->editColumn('lead', function ($row) {
-                    $lead_status = LeadStatus::where('status', 1)->get();
-                    $options = '<select class="form-control" name="lead_status" onchange="updateLeadStatus(' . $row->id . ', this.value)">';
-                    if($row->lead == 7){
-                        $options .= '<option value="' . $status->id . '" ' . $selected . '></option>';
-                    }
-                    foreach ($lead_status as $status) {
-                        $selected = $row->lead == $status->id ? 'selected' : '';
-                        $options .= '<option value="' . $status->id . '" ' . $selected . '>' . $status->lead . '</option>';
-                    }
-                    $options .= '</select>';
+                   
+                        $lead_status = LeadStatus::where('status', 1)->get();
+                        $options = '<select class="form-control" name="lead_status" onchange="updateLeadStatus(' . $row->id . ', this.value)">';
+                        if($row->lead == 7){
+                            $options .= '<option value="' . $status->id . '" ' . $selected . '></option>';
+                        }
+                        if(!empty($row->lead)){
+                            foreach ($lead_status as $status) {
+                                $selected = $row->lead == $status->id ? 'selected' : '';
+                                $options .= '<option value="' . $status->id . '" ' . $selected . '>' . $status->lead . '</option>';
+                            }
+                        }
+                        $options .= '</select>';
                     return $options;
                 })
                 ->editColumn('staff', function ($row) {
-                    return $row->getStaff->name;
+                    return (!empty($row->getStaff->name))?$row->getStaff->name:'';
                 })
                 ->editColumn('created_at', function($row) {
                     $date1 = date('Y-m-d H:i:s', strtotime($row->created_at));
@@ -76,7 +79,7 @@ class LeadController extends Controller
                 ->make(true);
         }
     
-        return view('admin.lead.list');
+        return view('admin.Lead.list');
     }
     
 
@@ -89,7 +92,7 @@ class LeadController extends Controller
         $states = State::get();
         $languages = DefaultLanguage::where('status',1)->get();
         
-        return view('admin.lead.add',compact('lead_status','source','staffs','tags','countries','states','languages'));
+        return view('admin.Lead.add',compact('lead_status','source','staffs','tags','countries','states','languages'));
     }
     public function store(StoreLeadRequest $request){
         if($request->isMethod('post')){
@@ -130,7 +133,7 @@ class LeadController extends Controller
         $leads = Lead :: where('id',$id)->with('getLeadStatus','getSource','getStaff','getCountry','getState','getDefaultLanguage')->first();
         $leadfile = LeadFile::where('lead_id',$id)->get();
         $leadnotes = LeadNote::where('lead_id',$id)->get();
-        return view('admin.lead.show', compact('leads','leadfile','leadnotes'));
+        return view('admin.Lead.show', compact('leads','leadfile','leadnotes'));
     }
     public function edit($id){
         $lead_status = LeadStatus::where('status',1)->get();
@@ -141,7 +144,7 @@ class LeadController extends Controller
         $states = State::get();
         $languages = DefaultLanguage::where('status',1)->get();
         $lead_data = Lead::where('id',$id)->first();
-        return view('admin.lead.edit', compact('lead_data','lead_status','source','staffs','tags','countries','states','languages'));
+        return view('admin.Lead.edit', compact('lead_data','lead_status','source','staffs','tags','countries','states','languages'));
     }
 
     public function update(StoreLeadRequest $request){
@@ -190,7 +193,7 @@ class LeadController extends Controller
         $languages = DefaultLanguage::where('status',1)->get();
         $lead_data = Lead::where('id',$id)->first();
         
-        return view('admin.lead.customer', compact('lead_data','lead_status','source','staffs','tags','countries','states','languages'));
+        return view('admin.Lead.customer', compact('lead_data','lead_status','source','staffs','tags','countries','states','languages'));
     }
 
     public function customerUpdate(UpdateLeadRequest $request){
@@ -244,7 +247,7 @@ class LeadController extends Controller
                     'getState',
                     'getDefaultLanguage'
                 ])->get();
-                $pdf = PDF::loadView('admin.lead.export', compact('data'));
+                $pdf = PDF::loadView('admin.Lead.export', compact('data'));
                 return $pdf->download('leads.pdf');
             default:
                 return back();
@@ -256,7 +259,7 @@ class LeadController extends Controller
         $staffs = User::where('role',3)->where('status',1)->get();
         $countries = Country::get();
         $states = State::get();
-        return view('admin.lead.importlead', compact('lead_status','source','staffs','countries'));
+        return view('admin.Lead.importlead', compact('lead_status','source','staffs','countries'));
     }
 
     public function import(Request $request)
