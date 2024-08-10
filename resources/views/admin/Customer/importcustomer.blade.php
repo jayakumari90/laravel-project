@@ -66,34 +66,31 @@
                     <th scope="col">Shipping City</th>
                     <th scope="col">Shipping State</th>
                     <th scope="col">Shipping Zip</th>
-                    <th scope="col">Shipping Country</th>                    
                   </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Sample Data	</td>
-                        <td>Sample Data	</td>
-                        <td>Sample Data	</td>
-                        <td>Sample Data	</td>
-                        <td>Sample Data	</td>
-                        <td>Sample Data	</td>
-                        <td>Sample Data	</td>
-                        <td>Sample Data	</td>
-                        <td>Sample Data	</td>
-                        <td>Sample Data	</td>
-                        <td>Sample Data	</td>
-                        <td>Sample Data	</td>
-                        <td>Sample Data	</td>
-                        <td>Sample Data	</td>
-                        <td>Sample Data	</td>
-                        <td>Sample Data	</td>
-                        <td>Sample Data	</td>
-                        <td>Sample Data	</td>
-                        <td>Sample Data	</td>
-                        <td>Sample Data	</td>
-                        <td>Sample Data	</td>
-                        <td>Sample Data	</td>
-                        <td>Sample Data	</td>
+                        <td>Jack</td>
+                        <td>Jack@gmail.com</td>
+                        <td>7894569874</td>
+                        <td>SEO</td>
+                        <td>Test</td>
+                        <td>DFF133</td>
+                        <td>India</td>
+                        <td>326589</td>
+                        <td>Jaipur</td>
+                        <td>Rajasthan	</td>
+                        <td>c-45,sodala	</td>
+                        <td>http://google.com	</td>
+                        <td>Billing Address</td>
+                        <td>Jaipur</td>
+                        <td>Rajasthan	</td>
+                        <td>235689	</td>
+                        <td>India	</td>
+                        <td>street	</td>
+                        <td>Jaipur	</td>
+                        <td>Rajasthan	</td>
+                        <td>789859	</td>
                     </tr>
                 </tbody>
               </table>

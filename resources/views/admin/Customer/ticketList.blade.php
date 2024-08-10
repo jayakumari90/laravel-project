@@ -35,7 +35,7 @@
 
 #sidebar ul li a {
     background: #ffffff;
-    color: #ccc;
+    color: #21258a;
     border-bottom: 1px solid #c8c5c5;
     display: block;
     width: 277px;
@@ -110,6 +110,7 @@
                                         <th scope="col">Priority</th>
                                         <th scope="col">Last Reply</th>
                                         <th scope="col">Created</th>
+                                        <th scope="col">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -186,7 +187,8 @@ $(document).ready(function() {
             {data: 'status', name: 'status'},
             {data: 'priority', name: 'priority'},
             {data: 'reply', name: 'reply'},
-            {data: 'created_at', name: 'created_at'}
+            {data: 'created_at', name: 'created_at'},
+            {data: 'action', name: 'action'}
         ]
     });
 });

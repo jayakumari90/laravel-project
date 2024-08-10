@@ -33,7 +33,7 @@
 
 #sidebar ul li a {
     background: #ffffff;
-    color: #ccc;
+    color: #21258a;
     border-bottom: 1px solid #c8c5c5;
     display: block;
     width: 277px;

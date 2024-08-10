@@ -22,7 +22,7 @@
                                 <button class="w3-bar-item w3-button" onclick="openCity('Notes')">Notes</button>
                             </div>      
                             <div id="Profile" class="w3-container w3-display-container city">
-                                <span onclick="this.parentElement.style.display='none'" class="w3-button w3-large w3-display-topright">&times;</span>
+                                <span onclick="this.parentElement.style.display='none'" class="w3-button w3-large w3-display-topright"></span>
                                 <h2>Profile</h2>
                                 <!-- Profile content -->
                                 <div class="col-sm-1">
@@ -69,27 +69,31 @@
                                             </tr>
                                             <tr>
                                             <th scope="col">Country</th>
-                                            <td>{{$leads->getCountry->name}}</td>
+                                            <td>{{(isset($leads->country) && !empty($leads->country))?$leads->getCountry->name:''}}</td>
                                             </tr>
                                             <tr>
                                             <th scope="col">State</th>
-                                            <td>{{$leads->getState->name}}</td>
+                                            <td>{{(isset($leads->state) && isset($leads->state))?$leads->getState->name:''}}</td>
                                             </tr>
                                             <tr>
-                                            <th scope="col">Value</th>
+                                            <th scope="col">City</th>
+                                            <td>{{(isset($leads->city) && isset($leads->city))?$leads->city:''}}</td>
+                                            </tr>
+                                            <tr>
+                                            <th scope="col">Lead Value</th>
                                             <td>{{$leads->lead_value}}</th>
                                             </tr>
                                             <tr>
-                                            <th scope="col">Tag</th>
+                                            <th scope="col">Tags</th>
                                             <td>{{$leads->tag}}</td>
                                             </tr>
                                             <tr>
                                             <th scope="col">Assigned</th>
-                                            <td>{{$leads->getStaff->name}}</td>
+                                            <td>{{(isset($leads->staff) && !empty($leads->staff))?$leads->getStaff->name:''}}</td>
                                             </tr>
                                             <tr>
                                             <th scope="col">Status</th>
-                                            <td>{{$leads->getLeadStatus->lead}}</td>
+                                            <td>{{(isset($leads->lead) && !empty($leads->lead))?$leads->getLeadStatus->lead:''}}</td>
                                             </tr>
                                             <tr>
                                             <th scope="col">Source</th>
@@ -101,7 +105,7 @@
                                             </tr>
                                             <tr>
                                             <th scope="col">Default Language</th>
-                                            <td>{{$leads->getDefaultLanguage->name}}</td>
+                                            <td>{{(isset($leads->default_language) && !empty($leads->default_language))?$leads->getDefaultLanguage->name:''}}</td>
                                             </tr>
                                             <tr>
                                             <th scope="col">Description</th>
@@ -119,6 +123,9 @@
                                             <th scope="col">Created</th>
                                             <td>{{$leads->created_at}}</td>
                                             </tr>
+                                            <th scope="col">Zip Code</th>
+                                            <td>{{$leads->zipcode}}</td>
+                                            </tr>
                                             
                                         </thead>
                                         <tbody>
@@ -128,7 +135,7 @@
                             
                             </div>
                             <div id="Attachment" class="w3-container w3-display-container city" style="display:none">
-                                <span onclick="this.parentElement.style.display='none'" class="w3-button w3-large w3-display-topright">&times;</span>
+                                <span onclick="this.parentElement.style.display='none'" class="w3-button w3-large w3-display-topright"></span>
                                 <h2>Attachment</h2>
                                 <form action="" method="post" id="dropbox-form" enctype="multipart/form-data">
                                   @csrf
@@ -142,12 +149,12 @@
                                 </form>
                                 <div class="col-sm-12" id="result">
                                     @foreach($leadfile as $file)
-                                        <img src="{{asset('uploads/').'/'.$file->image}}" width="100px">
+                                        <a href="{{asset('uploads/').'/'.$file->image}}" target="_blank"><img src="{{asset('uploads/').'/'.$file->image}}" width="100px"></a>
                                     @endforeach
                                 </div>
                             </div>
                             <div id="Notes" class="w3-container w3-display-container city" style="display:none">
-                                <span onclick="this.parentElement.style.display='none'" class="w3-button w3-large w3-display-topright">&times;</span>
+                                <span onclick="this.parentElement.style.display='none'" class="w3-button w3-large w3-display-topright"></span>
                                 <h2>Notes</h2>
                                 {!! Form::open(['method' => 'post', 'id'=>'lead-notes']) !!}
             

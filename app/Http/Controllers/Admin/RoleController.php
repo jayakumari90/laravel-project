@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\RoleType;
+use App\Models\RolePermission;
 use DataTables;
 class RoleController extends Controller
 {
@@ -57,15 +58,48 @@ class RoleController extends Controller
     }
 
     public function edit($id){
-        $role = RoleType::where('id', $id)->where('status',1)->first();           
-        return view('admin.Role.edit',compact('role'));
+        $role = RoleType::where('id', $id)->where('status',1)->first();    
+        $permission = RolePermission::where('role_id', $id)->get();       
+        return view('admin.Role.edit',compact('role','permission'));
     }
 
     public function update(Request $request){
         if($request->isMethod('post')){
-            RoleType::where('id',$request->role_id)->update([
+            $role = RoleType::where('id',$request->role_id)->update([
                 'role_type'=>$request->role_type
             ]);
+            
+                
+                foreach($request->permissions as $key => $val){
+                    $rec = RolePermission::where('role_id', $request->role_id)->where('module_name',$key)->first();
+                    $create = 0;
+                    $edit = 0;
+                    if($key != 'role' && (isset($val[2]) && $val[2] == 'create')){
+                        $create = 1;
+                    }else if($key == 'role' && (isset($val[0]) && $val[0] == 'create')){
+                        $create = 1;
+                    }
+                    if($key != 'role' && (isset($val[3]) && $val[3] == 'edit')){
+                        $edit = 1;
+                    }else if($key == 'role' && (isset($val[1]) && $val[1] == 'edit')){
+                        $edit = 1;
+                    }
+                    $insertArr = array(
+                        'role_id' => $request->role_id,
+                        'module_name' =>$key,
+                        'can_view_own' => (isset($val[0]) && $val[0] == 'view_own')?1:0,
+                        'can_view' => (isset($val[1]) && $val[1] == 'view')?1:0,                        
+                        'can_create' => $create,
+                        'can_edit' => $edit
+                    );
+                    if($rec){
+                        $update = RolePermission::where('id',$rec->id)->update($insertArr);
+                    }else{
+                        $add = RolePermission::Create($insertArr);
+                    }
+                   // dd($insertArr);
+                }
+            
             return response()->json(['status'=>true, 'msg'=>'Role updated successfully','redirect_url'=>route('role.list')]);
         }
     }

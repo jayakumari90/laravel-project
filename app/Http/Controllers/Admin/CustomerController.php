@@ -22,7 +22,9 @@ use App\Models\Tag;
 use App\Models\Project;
 use App\Models\Ticket;
 use App\Models\LeadStatus;
+use App\Models\TicketNote;
 use DataTables;
+use Auth;
 
 
 class CustomerController extends Controller
@@ -117,20 +119,39 @@ class CustomerController extends Controller
 
     public function updateBillingInfo(Request $request){
         if($request->isMethod('post')){
-            CustomerBilling::updateOrCreate([
-                'customer_id'=>$request->customer_id,
-                'billing_address'=>$request->billing_address,
-                'shipping_address'=>$request->shipping_address,
-                'billing_city'=>$request->billing_city,
-                'shipping_city'=>$request->shipping_city,
-                'billing_country'=>$request->billing_country,
-                'shipping_country'=>$request->shipping_country,
-                'billing_state'=>$request->billing_state,
-                'shipping_state'=>$request->shipping_state,
-                'billing_zipcode'=>$request->billing_zipcode,
-                'shipping_zipcode'=>$request->shipping_zipcode,
-                'status'=>1
-            ]);   
+            //dd($request->all());
+            $rec = CustomerBilling::where('customer_id', $request->customer_id)->first();
+            if($rec->count() > 0){
+                CustomerBilling::where('id',$rec->id)->update([
+                    'customer_id'=>$request->customer_id,
+                    'billing_address'=>$request->billing_address,
+                    'shipping_address'=>$request->shipping_address,
+                    'billing_city'=>$request->billing_city,
+                    'shipping_city'=>$request->shipping_city,
+                    'billing_country'=>$request->billing_country,
+                    'shipping_country'=>$request->shipping_country,
+                    'billing_state'=>$request->billing_state,
+                    'shipping_state'=>$request->shipping_state,
+                    'billing_zipcode'=>$request->billing_zipcode,
+                    'shipping_zipcode'=>$request->shipping_zipcode,
+                    'status'=>1
+                ]);   
+            }else{
+                CustomerBilling::Create([
+                    'customer_id'=>$request->customer_id,
+                    'billing_address'=>$request->billing_address,
+                    'shipping_address'=>$request->shipping_address,
+                    'billing_city'=>$request->billing_city,
+                    'shipping_city'=>$request->shipping_city,
+                    'billing_country'=>$request->billing_country,
+                    'shipping_country'=>$request->shipping_country,
+                    'billing_state'=>$request->billing_state,
+                    'shipping_state'=>$request->shipping_state,
+                    'billing_zipcode'=>$request->billing_zipcode,
+                    'shipping_zipcode'=>$request->shipping_zipcode,
+                    'status'=>1
+                ]);   
+            }
             return response()->json(['status'=> true, 'msg' => 'Billing address added successfully.','redirect_url' => route('customer.show',$request->customer_id)]);
         }
     }
@@ -211,8 +232,7 @@ class CustomerController extends Controller
     public function ticket(Request $request, $id){
         $tags = Tag::where('status',1)->get();
         $staffs = User::where('role',3)->where('status',1)->get();
-        $projects = Project::where('status',1)->get();
-        return view('admin.Customer.ticket',compact('tags','staffs','projects','id'));
+        return view('admin.Customer.ticket',compact('tags','staffs','id'));
     }
 
     public function storeTicket(Request $request){
@@ -280,7 +300,7 @@ class CustomerController extends Controller
                     //return $status;
                 })
                 ->addColumn('action', function($row) {
-                    $btn = '<a href="javascript:void(0)" title="Edit" onclick="updateNote('.$row->id.')"> <i class="fas fa-pen-square"></i></a>';
+                    $btn = '<a href="'.route('customer.viewticket', ['customer_id' => $row->customer_id, 'id' => $row->id]).'" title="Show"> <i class="fas fa-eye"></i></a>';
                      return $btn;
                 })
                 ->editColumn('created_at', function($row) {
@@ -299,6 +319,9 @@ class CustomerController extends Controller
             return response()->json(['success'=>true, 'msg'=>'Lead status updated successfully']);
         }
     }
+
+
+
     
     public function importCustomer(){
         $customer = User::where('role',5)->where('status',1)->get();
@@ -329,4 +352,51 @@ class CustomerController extends Controller
             }
         }
     }
+
+    public function viewticket($cust_id,$id){
+        $ticket = Ticket::where('id', $id)->where('status',1)->first();
+        $tags = Tag::where('status',1)->get();
+        $staffs = User::where('role',3)->where('status',1)->get();
+        $ticketnotes = TicketNote::where('ticket_id', $id)->with('getCustomer')->get();
+        //dd($ticketnotes);
+        return view('admin.Customer.viewticket', compact('ticket','id','cust_id','tags','staffs', 'ticketnotes'));   
+        
+    }
+
+    public function storeTicketNote(Request $request) {
+        if ($request->isMethod('post')) {
+            // Validate the request data
+            $validatedData = $request->validate([
+                'ticket_id' => 'required|integer',
+                'customer_id' => 'required|integer',
+                'note' => 'required',
+            ]);
+    
+            // Create the ticket note
+            try {
+                TicketNote::create([
+                    'ticket_id' => $request->ticket_id,
+                    'customer_id' => $request->customer_id,
+                    'added_by' => auth()->user()->id,
+                    'note' => $request->note,
+                    'status' => 1
+                ]);
+                
+                return response()->json([
+                    'status' => true,
+                    'msg' => 'Ticket Note added successfully.',
+                    'redirect_url' => route('customer.ticketList', $request->customer_id)
+                ]);
+            } catch (\Exception $e) {
+                // Log the error message
+               // \Log::error('Error adding ticket note: ' . $e->getMessage());
+        
+                return response()->json([
+                    'status' => false,
+                    'msg' =>$e->getMessage()
+                ], 500);
+            }
+        }
+    }
+    
 }

@@ -65,22 +65,21 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Sample Data	</td>
-                        <td>Sample Data	</td>
-                        <td>Sample Data	</td>
-                        <td>Sample Data	</td>
-                        <td>Sample Data	</td>
-                        <td>Sample Data	</td>
-                        <td>Sample Data	</td>
-                        <td>Sample Data	</td>
-                        <td>Sample Data	</td>
-                        <td>Sample Data	</td>
-                        <td>Sample Data	</td>
-                        <td>Sample Data	</td>
-                        <td>6687a596ca34c@example.com</td>
-                        <td>Sample Data	</td>
-                        <td>Sample Data	</td>
-                        <td>Sample Data	</td>
+                        <td>Jhon</td>
+                        <td>CEO</td>
+                        <td>Company name</td>
+                        <td>Test</td>
+                        <td>India</td>
+                        <td>323232</td>
+                        <td>Jaipur	</td>
+                        <td>Rajasthan</td>
+                        <td>Address</td>
+                        <td>New</td>
+                        <td>FB</td>
+                        <td>test@gmail.com	</td>
+                        <td>http://google.com</td>
+                        <td>7894569878</td>
+                        <td>30</td>
                         <td>tag1,tag2</td>
                     </tr>
                 </tbody>

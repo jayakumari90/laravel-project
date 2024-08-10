@@ -38,15 +38,75 @@
                 <!-- CSRF Token -->
                 {!! Form::token() !!}
                 <div class="row">
-                <input type="hidden" name="role_id" id="role_id" value="{{$role->id}}">
-                <div class="col-md-6 col-lg-4">
-                    <div class="form-group">
-                        <label for="role"><small class="req text-danger">* </small>Role</label>
-                        <input type="text" class="form-control" id="role_type" name="role_type" value="{{$role->role_type}}">
-                        
-                        <span id="role_type-err" class="error"></span>                       
+                    <input type="hidden" name="role_id" id="role_id" value="{{$role->id}}">
+                    <div class="col-md-6 col-lg-4">
+                        <div class="form-group">
+                            <label for="role"><small class="req text-danger">* </small>Role</label>
+                            <input type="text" id="role_type" name="role_type" value="{{$role->role_type}}">
+                            
+                            <span id="role_type-err" class="error"></span>                       
+                        </div>
                     </div>
-                </div>
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Features</th>
+                            <th>Capabilities</th>
+                        </tr>
+                        @if($permission->count() > 0)
+                        @foreach($permission as  $val)
+                        <tr>
+                            <td>{{ucfirst($val->module_name)}}</td>
+                            <td>
+                                <input type="checkbox" name="permissions[{{$val->module_name}}][]" @if($val->can_view_own == 1) {{'checked'}} @endif value="view_own">View (Own)
+                                <input type="checkbox" name="permissions[{{$val->module_name}}][]" @if($val->can_view == 1) {{'checked'}} @endif value="view">View (Global)
+                                <input type="checkbox" name="permissions[{{$val->module_name}}][]" @if($val->can_create == 1) {{'checked'}} @endif value="create">Create
+                                <input type="checkbox" name="permissions[{{$val->module_name}}][]" @if($val->can_edit == 1) {{'checked'}} @endif value="edit">Edit
+
+                            </td>
+                        </tr>
+                        @endforeach
+                        @else
+                        <tr>
+                            <td>Lead</td>
+                            <td>
+                                <input type="checkbox" name="permissions[lead][]" value="view_own">View (Own)
+                                <input type="checkbox" name="permissions[lead][]" value="view">View (Global)
+                                <input type="checkbox" name="permissions[lead][]" value="create">Create
+                                <input type="checkbox" name="permissions[lead][]"  value="edit">Edit
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Customer</td>
+                            <td>
+                                <input type="checkbox" name="permissions[customer][]" value="view_own">View (Own)
+                                <input type="checkbox" name="permissions[customer][]" value="view">View (Global)
+                                <input type="checkbox" name="permissions[customer][]"  value="create">Create
+                                <input type="checkbox" name="permissions[customer][]" value="edit">Edit
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Staff</td>
+                            <td>
+                                <input type="checkbox" name="permissions[staff][]"  value="view_own">View (Own)
+                                <input type="checkbox" name="permissions[staff][]"  value="view">View (Global)
+                                <input type="checkbox" name="permissions[staff][]"  value="create">Create
+                                <input type="checkbox" name="permissions[staff][]"  value="edit">Edit
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Role</td>
+                            <td>
+                                <input type="checkbox" name="permissions[role][]" value="create">Create
+                                <input type="checkbox" name="permissions[role][]" value="edit">Edit
+
+                            </td>
+                        </tr>
+                        @endif
+                    </table>
+
                 <div class="card-action">
                 <button class="btn btn-success">Submit</button>
                 </div>

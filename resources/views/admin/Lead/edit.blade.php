@@ -60,7 +60,7 @@
                             <option value="{{ $val->id}}">{{ $val->source}}</option>
                             @endforeach
                         </select> -->
-                        <input type="text" class="form-control" id="sources" name="source">
+                        <input type="text" class="form-control" id="sources" name="source" value="{{$lead_data->source}}">
                         <span id="source-err" class="error"></span> 
                     </div>
                 </div>
@@ -77,32 +77,32 @@
                 </div>
                 <div class="col-md-6 col-lg-4">
                     <div class="form-group">
-                        <label for="tages">Tages</label>
+                        <label for="tages">Tags</label>
                         <select class="form-select select2" name="tag[]" id="tfgyhtygfuytutyyu" multiple="multiple">
                         
                         @foreach($tags as $tag)
-                        <option value="{{ $tag->tag_name}}">{{ $tag->tag_name}}</option>
+                        <option value="{{ $tag->tag_name}}" @if(!empty($lead_data->tag) && in_array($tag->tag_name,explode(',',$lead_data->tag))) {{ 'selected' }}@endif>{{ $tag->tag_name}}</option>
                         @endforeach
                         </select>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4">
                     <div class="form-group">
-                        <label for="name">Name</label>
+                        <label for="name"><small class="req text-danger">* </small>Name</label>
                         <input type="text" class="form-control" id="cname" placeholder="Name" name="name" value="{{($lead_data->name)?$lead_data->name:''}}" />
                         <span id="name-err" class="error"></span> 
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4">
                     <div class="form-group">
-                        <label for="email">Email</label>
+                        <label for="email"><small class="req text-danger">* </small>Email</label>
                         <input type="email" class="form-control" id="email" placeholder="Email" name="email" value="{{($lead_data->email)?$lead_data->email:''}}" />
                         <span id="email-err" class="error"></span> 
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4">
                     <div class="form-group">
-                        <label for="phone">Phone</label>
+                        <label for="phone"><small class="req text-danger">* </small>Phone</label>
                         <input type="text" class="form-control" id="phone-no" placeholder="Phone" name="phone"  value="{{($lead_data->phone)?$lead_data->phone:''}}" />
                         <span id="phone-err" class="error"></span> 
                     </div>

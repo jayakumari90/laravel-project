@@ -76,8 +76,9 @@ Route::group(['middleware'=>'auth'],function()
     Route::any('/customer/add-ticket/{id}', [CustomerController::class, 'ticket'])->name('customer.ticket');
     Route::any('/customer/store-ticket', [CustomerController::class, 'storeTicket'])->name('customer.storeTicket');
     Route::any('/customer/ticket-list/{id}', [CustomerController::class, 'ticketList'])->name('customer.ticketList');
+    Route::get('/customer/ticket-view/{customer_id}/{id}', [CustomerController::class, 'viewticket'])->name('customer.viewticket');
     Route::any('/customer/update-ticket-status', [CustomerController::class, 'updateTicketStatus'])->name('customer.updateTicketStatus');
-    
+    Route::any('/customer/store-ticketnote', [CustomerController::class, 'storeTicketNote'])->name('customer.storeTicketNote');
     Route::any('/staff', [StaffController::class, 'list'])->name('staff.list');
     Route::any('/staff/update-staff-status', [StaffController::class, 'updateStaffStatus'])->name('staff.updateStaffStatus');
     Route::any('/staff/add', [StaffController::class, 'add'])->name('staff.add');

@@ -55,7 +55,6 @@
                     <th scope="col">Email</th>
                     <th scope="col">Phone</th>
                     <th scope="col">Value</th>
-                    <th scope="col">Tag</th>
                     <th scope="col">Assigned</th>
                     <th scope="col">Status</th>
                     <th scope="col">Source</th>
@@ -101,7 +100,6 @@
         {data: 'email', name: 'email'},
         {data: 'phone', name: 'phone'},
         {data: 'lead_value', name: 'lead_value'},
-        {data: 'tag', name: 'tag'},
         {data: 'staff', name: 'staff'},
         {data: 'lead', name: 'lead'},
         {data: 'source', name: 'source'},

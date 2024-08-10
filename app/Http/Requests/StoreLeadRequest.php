@@ -26,18 +26,18 @@ class StoreLeadRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => 'email|max:255',
-            'phone' => 'string|max:20',
+            'email' => 'required|email|max:255',
+            'phone' => 'required|regex:/^[0-9]{10}$/', // Ensures phone is exactly 10 digits
             'address' => 'nullable|string|max:255',
             'lead' => 'required|integer',
             'source' => 'required|string',
             'staff' => 'integer',
             'tag' => 'nullable|string|max:255',
             'position' => 'nullable|string|max:255',
-            'country' => 'integer',
-            'state' => 'integer',
+            'country' => 'nullable|integer',
+            'state' => 'nullable|integer',
             'city' => 'nullable|string|max:255',
-            'website' => 'nullable|url|max:255',
+            'website' => 'nullable|string|max:255',
             'lead_value' => 'nullable|numeric',
             'default_language' => 'integer',
             'company' => 'nullable|string|max:255',

@@ -29,7 +29,7 @@
 
 #sidebar ul li a {
     background: #ffffff;
-    color: #ccc;
+    color: #21258a;
     border-bottom: 1px solid #c8c5c5;
     display: block;
     width: 277px;
@@ -117,7 +117,7 @@
                             <button class="w3-bar-item w3-button" onclick="openCity('Billing')">Billing & Shipping</button>
                         </div>   
                         <div id="Customer" class="w3-container w3-display-container city">
-                            <span onclick="this.parentElement.style.display='none'" class="w3-button w3-large w3-display-topright">&times;</span>                      
+                            <span onclick="this.parentElement.style.display='none'" class="w3-button w3-large w3-display-topright"></span>                      
                             <h2>Customer Details</h2>
                             <div class="row">
                                 {!! Form::open(['method' => 'post', 'id'=>'customer-form']) !!}     
@@ -254,7 +254,7 @@
                             </div>
                         </div>
                         <div id="Billing" class="w3-container w3-display-container city" style="display:none">
-                            <span onclick="this.parentElement.style.display='none'" class="w3-button w3-large w3-display-topright">&times;</span>
+                            <span onclick="this.parentElement.style.display='none'" class="w3-button w3-large w3-display-topright"></span>
                             <h2>Billing & Shipping</h2>
                             {!! Form::open(['method' => 'post', 'id'=>'billing-form']) !!}     
                                 <!-- CSRF Token -->

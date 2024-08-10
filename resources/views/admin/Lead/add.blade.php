@@ -76,7 +76,7 @@
                 </div>
                 <div class="col-md-6 col-lg-4">
                     <div class="form-group">
-                        <label for="tages">Tages</label>
+                        <label for="tages">Tags</label>
                         <select class="form-select select2" name="tag[]" id="tfgyhtygfuytutyyu" multiple="multiple">
                         
                         @foreach($tags as $tag)
@@ -87,22 +87,22 @@
                 </div>
                 <div class="col-md-6 col-lg-4">
                     <div class="form-group">
-                        <label for="name">Name</label>
+                        <label for="name"><small class="req text-danger">* </small>Name</label>
                         <input type="text" class="form-control" id="cname" placeholder="Name" name="name" />
                         <span id="name-err" class="error"></span> 
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4">
                     <div class="form-group">
-                        <label for="email">Email</label>
+                        <label for="email"><small class="req text-danger">* </small>Email</label>
                         <input type="email" class="form-control" id="cemail" placeholder="Email" name="email" />
                         <span id="email-err" class="error"></span> 
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4">
                     <div class="form-group">
-                        <label for="phone">Phone</label>
-                        <input type="text" class="form-control" id="phone-no" placeholder="Phone" name="phone" />
+                        <label for="phone"><small class="req text-danger">* </small>Phone</label>
+                        <input type="text" class="form-control" id="phone" placeholder="Phone" name="phone" />
                         <span id="phone-err" class="error"></span> 
                     </div>
                 </div>
@@ -245,7 +245,7 @@ $('#lead-form').on('submit', function(event) {
             success: function(data) {
                 console.log('data',data);
                 if(data.status){
-                    window.location="/lead";
+                    window.location.href=data.redirect_url;
                 }else{
                     let errors = data.data;
                     for (let key in errors) {
